@@ -1,0 +1,102 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Virtual Environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ignore Vercel files
+.vercel/
+
+# Python bytecode files
+*.pyc
+__pycache__/
+
+.env
+.env.*
+!.env.example
+*.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+# Django migrations (ignore all migrations, including those inside app directories)
+migrations/
+**/migrations/
+.terraform/
+.terraform.lock.hcl
+# SQLite database
+
+# Django-specific files
+*.pot
+*.pyc
+media/
+static/
+staticfiles/
+
+terraform.tfstate
+
+# IDEs and editors
+*.sublime-project
+*.sublime-workspace
+*.iml
+
+# mypy
+.mypy_cache/
+
+# Coverage reports
+.coverage
+.coverage.*
+nosetests.xml
+*.cover
+
+# pytest
+.cache/
+.pytest_cache/
+
+# PyCharm
+*.idea/
+
+# Jupyter Notebook
+.ipynb_checkpoints

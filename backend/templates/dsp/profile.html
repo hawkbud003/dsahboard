@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Campaigns{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h2 class="mb-4">Profile</h2>
+    <div class="row">
+      <!-- Left Profile Card -->
+      <div class="col-md-4">
+        <div class="profile-card">
+          <img src="https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D" alt="User Image">
+          <h5>Esther Howard</h5>
+          <p class="text-muted">Hubertusstraße 149, 41239 Mönchengladbach</p>
+          <div class="rating">
+            <span>&#9733; 5.0 (1)</span>
+          </div>
+          <button class="btn-close-account">Close Account</button>
+        </div>
+      </div>
+      <!-- Right Profile Details -->
+      <div class="col-md-8">
+        <div class="profile-details-card">
+          <h5>Profile</h5>
+          <form>
+            <!-- Name -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Enter your name" value="Santi chai">
+            </div>
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter your email" value="s.kaensopha@swiss-marketing-systems.com">
+            </div>
+            <!-- Phone -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" value="02746565684">
+            </div>
+            <button type="submit" class="btn save-btn w-100">Save Now</button>
+          </form>
+          <hr>
+          <h5>Password</h5>
+          <form>
+            <!-- Current Password -->
+            <div class="mb-3 password-input-group">
+              <label for="current-password" class="form-label">Current Password</label>
+              <input type="password" class="form-control" id="current-password" value="************">
+              <span class="toggle-password" onclick="togglePasswordVisibility('current-password')">&#128065;</span>
+            </div>
+            <!-- New Password -->
+            <div class="mb-3 password-input-group">
+              <label for="new-password" class="form-label">New Password</label>
+              <input type="password" class="form-control" id="new-password" placeholder="New Password">
+              <span class="toggle-password" onclick="togglePasswordVisibility('new-password')">&#128065;</span>
+            </div>
+            <!-- Confirm Password -->
+            <div class="mb-3 password-input-group">
+              <label for="confirm-password" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="confirm-password" placeholder="Confirm New Password">
+              <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password')">&#128065;</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toggle Password Visibility -->
+
+
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+    function togglePasswordVisibility(id) {
+      const passwordInput = document.getElementById(id);
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+      } else {
+        passwordInput.type = "password";
+      }
+    }
+  </script>
+{% endblock %}

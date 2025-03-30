@@ -1,0 +1,38 @@
+# Stage 1: Build and prepare production artifacts
+FROM node:22-slim AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install all dependencies (including dev)
+COPY package*.json ./
+RUN npm ci --include=dev
+
+# Copy source code and build the Next.js app
+COPY . .
+RUN npm run build
+
+# Remove dev dependencies (prune for production)
+RUN npm prune --production
+
+# Stage 2: Production image
+FROM node:22-slim
+
+WORKDIR /app
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Copy package files, built assets and production dependencies from builder
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+
+# Switch to non-root user
+USER node
+
+# Expose port and start the application
+EXPOSE 3000
+CMD ["npm", "start"]
