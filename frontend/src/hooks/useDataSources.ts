@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Auth, User } from '../types/auth';
 import { CommonSelectResponse, DataSources, Interest, Location } from '../types/campaign';
-import { campaignClient } from '@/lib/campaign-client';
+import { campaignClient } from '@/lib/CampaignClient';
 import { Creative } from '@/types/creative';
-import { creativeClient } from '@/lib/creative.client';
+import { creativeClient } from '@/lib/CreativeClient';
 
 export const useDataSources = (auth: Auth | null) => {
     const [dataSources, setDataSources] = React.useState<DataSources>({

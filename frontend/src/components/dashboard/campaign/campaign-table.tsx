@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
-import { campaignClient } from '@/lib/campaign-client';
+import { campaignClient } from '@/lib/CampaignClient';
 import { utils } from '@/lib/common-utils';
 import { paths } from '@/paths';
 import { Campaign } from '@/types/campaign';

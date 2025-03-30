@@ -1,5 +1,5 @@
 "use client";
-import { campaignClient } from "@/lib/campaign-client";
+import { campaignClient } from "@/lib/CampaignClient";
 import { Alert, Box, Button, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { UseFormGetValues, UseFormRegister, UseFormSetValue } from "react-hook-form";
