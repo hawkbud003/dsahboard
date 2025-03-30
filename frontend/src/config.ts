@@ -1,4 +1,4 @@
-import { getSiteURL } from '@/lib/GetSiteUrl';
+import { getSiteURL } from '@/lib/get-site-url';
 import { LogLevel } from '@/lib/Logger';
 
 export interface Config {
