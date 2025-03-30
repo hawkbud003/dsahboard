@@ -2,7 +2,7 @@
 import { useAuth } from '@/hooks/use-auth';
 import { useDataSources } from '@/hooks/useDataSources';
 import { useFormSections } from '@/hooks/useFormSections';
-import { campaignClient } from '@/lib/campaign-client';
+import { campaignClient } from '@/lib/CampaignClient';
 import { utils } from '@/lib/common-utils';
 import { paths } from '@/paths';
 import { CampaignFormData } from '@/types/campaign';

@@ -11,8 +11,8 @@ import * as React from 'react';
 
 import { useAuth } from '@/hooks/use-auth';
 import { accountClient } from '@/lib/account-client';
-import { authClient } from '@/lib/auth-client';
-import { logger } from '@/lib/default-logger';
+import { authClient } from '@/lib/AuthClient';
+import { logger } from '@/lib/DefaultLogger';
 import { paths } from '@/paths';
 import { User } from '@/types/auth';
 

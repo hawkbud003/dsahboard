@@ -1,6 +1,6 @@
 "use client"
 import { utils } from '@/lib/common-utils';
-import { creativeClient } from '@/lib/creative.client';
+import { creativeClient } from '@/lib/CreativeClient';
 import { paths } from '@/paths';
 import { CreativeFormData } from '@/types/creative';
 import { CreativeFormSchema } from '@/types/schema';

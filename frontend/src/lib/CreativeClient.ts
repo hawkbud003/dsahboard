@@ -1,4 +1,4 @@
-
+'use client';
 
 import { Creative, CreativeFormData } from '@/types/creative';
 import axiosInstance from './axios-instance';
