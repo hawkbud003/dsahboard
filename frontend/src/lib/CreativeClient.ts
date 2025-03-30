@@ -2,7 +2,7 @@
 
 import { Creative, CreativeFormData } from '@/types/creative';
 import axiosInstance from './axios-instance';
-import { utils } from './common-utils';
+import { utils } from './CommonUtils';
 
 
 class CreativeClient {
