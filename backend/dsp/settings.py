@@ -1,7 +1,6 @@
 from datetime import timedelta
 from pathlib import Path
 import os
-from decouple import config
 import environ
 from dotenv import load_dotenv
 import dj_database_url
@@ -31,6 +30,7 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
+    "api",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "social_django",
-    "api",
     "drf_yasg",
     "storages",
     "corsheaders",
@@ -175,7 +174,7 @@ AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default='')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='')
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default='')
 AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default='us-east-1')
-AWS_S3_SIGNATURE_VERSION = config('AWS_S3_SIGNATURE_VERSION')
+AWS_S3_SIGNATURE_VERSION = env('AWS_S3_SIGNATURE_VERSION')
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 AWS_QUERYSTRING_AUTH = False
 
@@ -199,5 +198,3 @@ INSTALLED_APPS += ["rest_framework_simplejwt.token_blacklist"]
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
 
-# Custom user model
-AUTH_USER_MODEL = 'api.CustomUser'
