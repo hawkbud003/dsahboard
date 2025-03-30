@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  webpack: (config) => {
+  modularizeImports: {
+    '@mui/icons-material': {
+      transform: '@mui/icons-material/{{member}}',
+    },
+  },
+  webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': './src',
@@ -14,6 +19,11 @@ const nextConfig = {
       '@/hooks': './src/hooks',
       '@/contexts': './src/contexts',
     };
+    config.resolve.enforceExtension = false;
+    config.resolve.enforceModuleExtension = false;
+    // Enable case sensitive path checking
+    config.resolve.symlinks = false;
+    config.resolve.caseSensitive = true; 
     return config;
   },
 };
