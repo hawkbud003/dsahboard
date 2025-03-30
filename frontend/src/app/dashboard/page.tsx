@@ -13,7 +13,7 @@ import RedirectBtn from '@/components/dashboard/layout/redirect-btn';
 import { Search } from '@/components/dashboard/layout/search';
 import { useAuth } from '@/hooks/use-auth';
 import { usePopover } from '@/hooks/use-popover';
-import { campaignClient } from '@/lib/campaign-client';
+import { campaignClient } from '@/lib/CampaignClient';
 import { Campaign } from '@/types/campaign';
 import { CircularProgress } from '@mui/material';
 import { useState } from 'react';
