@@ -26,7 +26,7 @@ from .serializers import (CampaignCreateUpdateSerializer,
                           KeywordSerializer, LocationSerializer,
                           ProximitySerializer, ProximityStoreSerializer,
                           WeatherSerializer, target_typeSerializer,BiddingDetailsSerializer,CampaignVideoSerializer,tag_trackerSerializer)
-import xlsxwriter
+
 from django.core.files.base import File
 from rest_framework import viewsets, status
 from rest_framework.parsers import MultiPartParser, FormParser
