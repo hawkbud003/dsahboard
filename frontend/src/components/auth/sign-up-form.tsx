@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
+import { authClient } from '@/lib/AuthClient';
 import { paths } from '@/paths';
 import { User, SignUpFormData } from '@/types/auth';
 import { signUpSchema } from '@/types/schema';
@@ -15,7 +16,6 @@ import RouterLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import { authClient } from '../../lib/auth-client';
 import FormField from '../dashboard/layout/form-field';
 
 export function SignUpForm(): React.JSX.Element {
