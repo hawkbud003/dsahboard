@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 
 import { CustomersTable } from '@/components/dashboard/customer/customers-table';
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/lib/AuthClient';
 import { Customer } from '@/types/auth';
 import { Box, CircularProgress } from '@mui/material';
 
