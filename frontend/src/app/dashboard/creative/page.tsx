@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { CreativeTable } from '@/components/dashboard/creative/creative-table';
 import RedirectBtn from '@/components/dashboard/layout/redirect-btn';
 import { Search } from '@/components/dashboard/layout/search';
-import { creativeClient } from '@/lib/creative.client';
+import { creativeClient } from '@/lib/CreativeClient';
 import { Creative } from '@/types/creative';
 import { CircularProgress } from '@mui/material';
 import { useState } from 'react';
