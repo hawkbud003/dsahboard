@@ -23,8 +23,7 @@ ALLOWED_HOSTS = [
     '.vercel.app',
     "127.0.0.1",
     "localhost",
-    "ad-campaign.vercel.app",
-    "ad-campaign-git-dev-ga7utis-projects.vercel.app",
+    'frontenddashboard.vercel.app'
     "13.233.13.8"
     
 ]
