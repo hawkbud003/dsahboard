@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 import { useAuth } from '@/hooks/use-auth';
-import { logger } from '@/lib/default-logger';
+import { logger } from '@/lib/DefaultLogger';
 import { paths } from '@/paths';
 
 export interface GuestGuardProps {
