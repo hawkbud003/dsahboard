@@ -4,6 +4,7 @@ import os
 from decouple import config
 import environ
 from dotenv import load_dotenv
+import dj_database_url
 
 # Load environment variables
 load_dotenv()
@@ -79,18 +80,11 @@ TEMPLATES = [
 WSGI_APPLICATION = "dsp.wsgi.application"
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME', default='campaign_manager'),
-        'USER': env('DB_USER', default='postgres'),
-        'PASSWORD': env('DB_PASSWORD', default=''),
-        'HOST': env('DB_HOST', default='localhost'),
-        'PORT': env('DB_PORT', default='5432'),
-        'OPTIONS': {
-            'sslmode': 'require',
-            'client_encoding': 'UTF8',
-        }
-    }
+    'default': dj_database_url.config(
+        default=env('DATABASE_URL', default='postgres://postgres:postgres@localhost:5432/campaign_manager'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 AUTHENTICATION_BACKENDS = (
