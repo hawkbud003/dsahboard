@@ -23,7 +23,6 @@ const nextConfig = {
     config.resolve.enforceModuleExtension = false;
     // Enable case sensitive path checking
     config.resolve.symlinks = false;
-    config.resolve.caseSensitive = true; 
     return config;
   },
 };
