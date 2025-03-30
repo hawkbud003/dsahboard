@@ -1,4 +1,24 @@
 /** @type {import('next').NextConfig} */
-const config = {};
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  experimental: {
+    appDir: true,
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': './src',
+      '@/components': './src/components',
+      '@/lib': './src/lib',
+      '@/styles': './src/styles',
+      '@/types': './src/types',
+      '@/utils': './src/utils',
+      '@/hooks': './src/hooks',
+      '@/contexts': './src/contexts',
+    };
+    return config;
+  },
+};
 
-export default config;
+export default nextConfig;
