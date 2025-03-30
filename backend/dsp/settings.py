@@ -20,15 +20,13 @@ DEBUG = env('DJANGO_DEBUG', default=False)
 
 ALLOWED_HOSTS = [
     '*',
-    "abhiaryz.pythonanywhere.com",
-    "pythonanywhere.com",
-    ".now.sh",
+    '.vercel.app',
     "127.0.0.1",
     "localhost",
     "ad-campaign.vercel.app",
     "ad-campaign-git-dev-ga7utis-projects.vercel.app",
     "13.233.13.8"
-    "campaignmanager-pkdf.onrender.com"
+    
 ]
 
 INSTALLED_APPS = [
@@ -117,15 +115,15 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
-    "ALGORITHM": 'HS256',
+    "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,
-    "AUTH_HEADER_TYPES": ('Bearer',),
-    "USER_ID_FIELD": 'id',
-    "USER_ID_CLAIM": 'user_id',
-    "AUTH_TOKEN_CLASSES": ('rest_framework_simplejwt.tokens.AccessToken',),
-    "TOKEN_TYPE_CLAIM": 'token_type',
-    "JTI_CLAIM": 'jti',
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "JTI_CLAIM": "jti",
 }
 
 AUTH_PASSWORD_VALIDATORS = [
