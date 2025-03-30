@@ -1,4 +1,4 @@
-import { utils } from '@/lib/common-utils';
+import { utils } from '@/lib/CommonUtils';
 import { User } from '@/types/auth';
 import { CommonSelectResponse, Interest, Location } from '@/types/campaign';
 import { Creative } from '@/types/creative';

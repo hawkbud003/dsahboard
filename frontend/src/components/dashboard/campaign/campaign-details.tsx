@@ -12,7 +12,7 @@ import * as React from 'react';
 import { DetailGrid, DetailRow, FileDownloadItem, SectionContainer } from '../layout/section-container';
 import TargetType from '../layout/target-type';
 import { Campaign } from '@/types/campaign';
-import { utils } from '@/lib/common-utils';
+import { utils } from '@/lib/CommonUtils';
 import { useAuth } from '@/hooks/use-auth';
 
 interface CampaignDetailsPopOverProps {

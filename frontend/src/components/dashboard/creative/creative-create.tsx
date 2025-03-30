@@ -1,5 +1,5 @@
 "use client"
-import { utils } from '@/lib/common-utils';
+import { utils } from '@/lib/CommonUtils';
 import { creativeClient } from '@/lib/CreativeClient';
 import { paths } from '@/paths';
 import { CreativeFormData } from '@/types/creative';

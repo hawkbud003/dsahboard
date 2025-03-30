@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/hooks/use-auth';
 import { campaignClient } from '@/lib/CampaignClient';
-import { utils } from '@/lib/common-utils';
+import { utils } from '@/lib/CommonUtils';
 import { paths } from '@/paths';
 import { Campaign } from '@/types/campaign';
 import { CircularProgress, IconButton, MenuItem, Select, SelectChangeEvent, Tooltip, Typography } from '@mui/material';

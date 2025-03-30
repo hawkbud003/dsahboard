@@ -1,6 +1,6 @@
 'use client';
 
-import { utils } from '@/lib/common-utils';
+import { utils } from '@/lib/CommonUtils';
 import { Creative } from '@/types/creative';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';

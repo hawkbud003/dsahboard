@@ -1,6 +1,6 @@
 'use client';
 
-import { accountClient } from '@/lib/account-client';
+import { accountClient } from '@/lib/AccountClient';
 import { UpdatePasswordParams } from '@/types/auth';
 import { updatePaswordSchema } from '@/types/schema';
 import { zodResolver } from '@hookform/resolvers/zod';

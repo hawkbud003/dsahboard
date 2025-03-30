@@ -1,5 +1,5 @@
 // ReviewSection.tsx
-import { utils } from '@/lib/common-utils';
+import { utils } from '@/lib/CommonUtils';
 import { Grid } from '@mui/material';
 import { DetailGrid, DetailRow, SectionContainer } from '../../layout/section-container';
 import TargetType from '../../layout/target-type';

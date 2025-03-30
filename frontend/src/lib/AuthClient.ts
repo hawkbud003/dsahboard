@@ -1,9 +1,9 @@
 'use client';
 
 import { Auth, Customer, ResetPasswordParams, SignInFormData, SignUpFormData } from '@/types/auth';
-import { accountClient } from './account-client';
+import { accountClient } from './AccountClient';
 import axiosInstance from './axios-instance';
-import { utils } from './common-utils';
+import { utils } from './CommonUtils';
 
 class AuthClient {
   async signUp(user: SignUpFormData): Promise<boolean> {
