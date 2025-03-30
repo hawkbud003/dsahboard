@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/lib/AuthClient';
 import { paths } from '@/paths';
 import { SignInFormData } from '@/types/auth';
 import { signInSchema } from '@/types/schema';

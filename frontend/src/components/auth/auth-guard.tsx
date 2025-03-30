@@ -1,7 +1,7 @@
 /* eslint-disable eslint-comments/require-description -- Disabling this rule because the description is not necessary for this context */
 'use client';
 import { useAuth } from '@/hooks/use-auth';
-import { logger } from '@/lib/default-logger';
+import { logger } from '@/lib/DefaultLogger';
 import { paths } from '@/paths';
 import Alert from '@mui/material/Alert';
 import { useRouter } from 'next/navigation';

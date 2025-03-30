@@ -12,13 +12,14 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Controller, useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
+import { z } from 'zod';
 
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/lib/AuthClient';
+import { paths } from '@/paths';
 
-const schema = zod.object({ email: zod.string().min(1, { message: 'Email is required' }).email() });
+const schema = z.object({ email: z.string().min(1, { message: 'Email is required' }).email() });
 
-type Values = zod.infer<typeof schema>;
+type Values = z.infer<typeof schema>;
 
 const defaultValues = { email: '' } satisfies Values;
 
