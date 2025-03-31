@@ -1,6 +1,6 @@
 import logging
 from decimal import Decimal, ROUND_HALF_UP
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
@@ -64,26 +64,11 @@ def login_page(request):
         target_type.objects.create(category=category,subcategory=subcategory)
     return Response({"message": "Target type created successfully"}, status=status.HTTP_200_OK)
 
-def register_page(request):
-    return render(request, "dsp/register.html")
 
-def forgot_password_page(request):
-    return render(request, "dsp/forgot_password.html")
-
+@api_view(['GET'])
 def home(request):
-    return render(request, "dsp/index.html")
+    return Response({"message": "success"}, status=status.HTTP_200_OK)
 
-def campaigns_page(request):
-    return render(request, "dsp/campaigns.html")
-
-def add_campaign_page(request):
-    return render(request, "dsp/add_campaigns.html")
-
-def dashboard_profile(request):
-    return render(request, "dsp/profile.html")
-
-def dashboard_data(request):
-    return render(request, "dsp/data.html")
 
 from django.contrib.auth.models import User
 

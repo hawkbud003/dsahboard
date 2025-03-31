@@ -27,12 +27,8 @@ urlpatterns = [
     path("creative_list/", views.creative_list_all),
     path('get-csv/<int:campaign_id>', views.FileGetView.as_view(), name='mymodel-csv'),
     path("login/", views.login_page, name="login"),
-    path("campaigns/", views.campaigns_page, name="campaigns"),
-    path("add-campaign/", views.add_campaign_page, name="add_campaign"),
-    path("profile/", views.dashboard_profile, name="dashboard_profile"),
-    path("dashboard_data/", views.dashboard_data, name="dashboard_data"),
-    path("register/", views.register_page, name="register_page"),
-    path("forgot_password/", views.forgot_password_page, name="forgot_password_page"),
+
+  
     path("admin/", admin.site.urls),
     path("age/", views.age_api, name="age_api"),
     path("brandSafety/", views.brandSafety_api, name="brandSafety_api"),
