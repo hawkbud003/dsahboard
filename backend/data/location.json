@@ -1,0 +1,582 @@
+{
+    "success": true,
+    "message": "Data succcessfully fetched",
+    "data": [
+        {
+            "id": "1",
+            "country": "India",
+            "state": "Delhi",
+            "city": "Delhi",
+            "tier": "Tier-I",
+            "population": "1,09,27,986"
+        },
+        {
+            "id": "2",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Mumbai",
+            "tier": "Tier-I",
+            "population": "1,26,91,836"
+        },
+        {
+            "id": "3",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Pune",
+            "tier": "Tier-I",
+            "population": "29,35,744"
+        },
+        {
+            "id": "4",
+            "country": "India",
+            "state": "West Bengal",
+            "city": "Kolkata",
+            "tier": "Tier-I",
+            "population": "46,31,392"
+        },
+        {
+            "id": "5",
+            "country": "India",
+            "state": "Gujarat",
+            "city": "Ahmedabad",
+            "tier": "Tier-I",
+            "population": "37,19,710"
+        },
+        {
+            "id": "6",
+            "country": "India",
+            "state": "Andhra Pradesh",
+            "city": "Hyderabad",
+            "tier": "Tier-I",
+            "population": "35,97,816"
+        },
+        {
+            "id": "7",
+            "country": "India",
+            "state": "Karnataka",
+            "city": "Bangalore",
+            "tier": "Tier-I",
+            "population": "51,04,047"
+        },
+        {
+            "id": "8",
+            "country": "India",
+            "state": "Tamil Nadu",
+            "city": "Chennai",
+            "tier": "Tier-I",
+            "population": "43,28,063"
+        },
+        {
+            "id": "9",
+            "country": "India",
+            "state": "Chandigarh",
+            "city": "Chandigarh",
+            "tier": "Tier-II",
+            "population": "9,60,787"
+        },
+        {
+            "id": "10",
+            "country": "India",
+            "state": "Andhra Pradesh",
+            "city": "Vijayawada",
+            "tier": "Tier-II",
+            "population": "8,74,587"
+        },
+        {
+            "id": "11",
+            "country": "India",
+            "state": "Andhra Pradesh",
+            "city": "Visakhapatnam",
+            "tier": "Tier-II",
+            "population": "10,63,178"
+        },
+        {
+            "id": "12",
+            "country": "India",
+            "state": "Andhra Pradesh",
+            "city": "Guntur",
+            "tier": "Tier-II",
+            "population": "5,30,577"
+        },
+        {
+            "id": "13",
+            "country": "India",
+            "state": "Assam",
+            "city": "Guwahati",
+            "tier": "Tier-II",
+            "population": "8,99,094"
+        },
+        {
+            "id": "14",
+            "country": "India",
+            "state": "Bihar",
+            "city": "Patna",
+            "tier": "Tier-II",
+            "population": "15,99,920"
+        },
+        {
+            "id": "15",
+            "country": "India",
+            "state": "Chhattisgarh",
+            "city": "Bhilai",
+            "tier": "Tier-II",
+            "population": "6,25,138"
+        },
+        {
+            "id": "16",
+            "country": "India",
+            "state": "Chhattisgarh",
+            "city": "Raipur",
+            "tier": "Tier-II",
+            "population": "6,79,995"
+        },
+        {
+            "id": "17",
+            "country": "India",
+            "state": "Gujarat",
+            "city": "Rajkot",
+            "tier": "Tier-II",
+            "population": "11,77,362"
+        },
+        {
+            "id": "18",
+            "country": "India",
+            "state": "Gujarat",
+            "city": "Jamnagar",
+            "tier": "Tier-II",
+            "population": "4,92,056"
+        },
+        {
+            "id": "19",
+            "country": "India",
+            "state": "Gujarat",
+            "city": "Vadodara",
+            "tier": "Tier-II",
+            "population": "14,09,476"
+        },
+        {
+            "id": "20",
+            "country": "India",
+            "state": "Gujarat",
+            "city": "Surat",
+            "tier": "Tier-II",
+            "population": "28,94,504"
+        },
+        {
+            "id": "21",
+            "country": "India",
+            "state": "Haryana",
+            "city": "Faridabad",
+            "tier": "Tier-II",
+            "population": "12,20,229"
+        },
+        {
+            "id": "22",
+            "country": "India",
+            "state": "Jammu and Kashmir",
+            "city": "Srinagar",
+            "tier": "Tier-II",
+            "population": "9,75,857"
+        },
+        {
+            "id": "23",
+            "country": "India",
+            "state": "Jammu and Kashmir",
+            "city": "Jammu",
+            "tier": "Tier-II",
+            "population": "4,65,567"
+        },
+        {
+            "id": "24",
+            "country": "India",
+            "state": "Jharkhand",
+            "city": "Jamshedpur",
+            "tier": "Tier-II",
+            "population": "6,16,338"
+        },
+        {
+            "id": "25",
+            "country": "India",
+            "state": "Jharkhand",
+            "city": "Dhanbad",
+            "tier": "Tier-II",
+            "population": "2,19,636"
+        },
+        {
+            "id": "26",
+            "country": "India",
+            "state": "Jharkhand",
+            "city": "Ranchi",
+            "tier": "Tier-II",
+            "population": "8,46,454"
+        },
+        {
+            "id": "27",
+            "country": "India",
+            "state": "Karnataka",
+            "city": "Belgaum",
+            "tier": "Tier-II",
+            "population": "4,28,720"
+        },
+        {
+            "id": "28",
+            "country": "India",
+            "state": "Karnataka",
+            "city": "Hubli",
+            "tier": "Tier-II",
+            "population": "8,40,214"
+        },
+        {
+            "id": "29",
+            "country": "India",
+            "state": "Karnataka",
+            "city": "Mangalore",
+            "tier": "Tier-II",
+            "population": "4,17,387"
+        },
+        {
+            "id": "30",
+            "country": "India",
+            "state": "Karnataka",
+            "city": "Mysore",
+            "tier": "Tier-II",
+            "population": "8,68,313"
+        },
+        {
+            "id": "31",
+            "country": "India",
+            "state": "Kerala",
+            "city": "Kozhikode",
+            "tier": "Tier-II",
+            "population": "4,39,922"
+        },
+        {
+            "id": "32",
+            "country": "India",
+            "state": "Kerala",
+            "city": "Kochi",
+            "tier": "Tier-II",
+            "population": "6,04,696"
+        },
+        {
+            "id": "33",
+            "country": "India",
+            "state": "Kerala",
+            "city": "Thiruvananthapuram",
+            "tier": "Tier-II",
+            "population": "7,84,153"
+        },
+        {
+            "id": "34",
+            "country": "India",
+            "state": "Madhya Pradesh",
+            "city": "Gwalior",
+            "tier": "Tier-II",
+            "population": "8,82,458"
+        },
+        {
+            "id": "35",
+            "country": "India",
+            "state": "Madhya Pradesh",
+            "city": "Indore",
+            "tier": "Tier-II",
+            "population": "18,37,041"
+        },
+        {
+            "id": "36",
+            "country": "India",
+            "state": "Madhya Pradesh",
+            "city": "Bhopal",
+            "tier": "Tier-II",
+            "population": "15,99,914"
+        },
+        {
+            "id": "37",
+            "country": "India",
+            "state": "Madhya Pradesh",
+            "city": "Jabalpur",
+            "tier": "Tier-II",
+            "population": "10,30,168"
+        },
+        {
+            "id": "38",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Amravati",
+            "tier": "Tier-II",
+            "population": "6,03,837"
+        },
+        {
+            "id": "39",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Nagpur",
+            "tier": "Tier-II",
+            "population": "22,28,018"
+        },
+        {
+            "id": "40",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Aurangabad",
+            "tier": "Tier-II",
+            "population": "10,16,441"
+        },
+        {
+            "id": "41",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Nashik",
+            "tier": "Tier-II",
+            "population": "12,89,497"
+        },
+        {
+            "id": "42",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Bhiwandi",
+            "tier": "Tier-II",
+            "population": "7,07,035"
+        },
+        {
+            "id": "43",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Solapur",
+            "tier": "Tier-II",
+            "population": "9,97,281"
+        },
+        {
+            "id": "44",
+            "country": "India",
+            "state": "Maharashtra",
+            "city": "Kolhapur",
+            "tier": "Tier-II",
+            "population": "5,16,142"
+        },
+        {
+            "id": "45",
+            "country": "India",
+            "state": "Odisha",
+            "city": "Cuttack",
+            "tier": "Tier-II",
+            "population": "5,80,000"
+        },
+        {
+            "id": "46",
+            "country": "India",
+            "state": "Odisha",
+            "city": "Bhubaneshwar",
+            "tier": "Tier-II",
+            "population": "7,62,243"
+        },
+        {
+            "id": "47",
+            "country": "India",
+            "state": "Punjab",
+            "city": "Amritsar",
+            "tier": "Tier-II",
+            "population": "10,92,450"
+        },
+        {
+            "id": "48",
+            "country": "India",
+            "state": "Punjab",
+            "city": "Jalandhar",
+            "tier": "Tier-II",
+            "population": "7,85,178"
+        },
+        {
+            "id": "49",
+            "country": "India",
+            "state": "Punjab",
+            "city": "Ludhiana",
+            "tier": "Tier-II",
+            "population": "15,45,368"
+        },
+        {
+            "id": "50",
+            "country": "India",
+            "state": "Rajasthan",
+            "city": "Bikaner",
+            "tier": "Tier-II",
+            "population": "5,76,015"
+        },
+        {
+            "id": "51",
+            "country": "India",
+            "state": "Rajasthan",
+            "city": "Jaipur",
+            "tier": "Tier-II",
+            "population": "27,11,758"
+        },
+        {
+            "id": "52",
+            "country": "India",
+            "state": "Rajasthan",
+            "city": "Jodhpur",
+            "tier": "Tier-II",
+            "population": "9,21,476"
+        },
+        {
+            "id": "53",
+            "country": "India",
+            "state": "Rajasthan",
+            "city": "Kota",
+            "tier": "Tier-II",
+            "population": "7,63,088"
+        },
+        {
+            "id": "54",
+            "country": "India",
+            "state": "Tamil Nadu",
+            "city": "Salem",
+            "tier": "Tier-II",
+            "population": "7,78,396"
+        },
+        {
+            "id": "55",
+            "country": "India",
+            "state": "Tamil Nadu",
+            "city": "Tiruppur",
+            "tier": "Tier-II",
+            "population": "3,97,521"
+        },
+        {
+            "id": "56",
+            "country": "India",
+            "state": "Tamil Nadu",
+            "city": "Coimbatore",
+            "tier": "Tier-II",
+            "population": "9,59,823"
+        },
+        {
+            "id": "57",
+            "country": "India",
+            "state": "Tamil Nadu",
+            "city": "Tiruchirappalli",
+            "tier": "Tier-II",
+            "population": "7,75,484"
+        },
+        {
+            "id": "58",
+            "country": "India",
+            "state": "Tamil Nadu",
+            "city": "Madurai",
+            "tier": "Tier-II",
+            "population": "9,09,908"
+        },
+        {
+            "id": "59",
+            "country": "India",
+            "state": "Telangana",
+            "city": "Warangal",
+            "tier": "Tier-II",
+            "population": "5,57,802"
+        },
+        {
+            "id": "60",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Moradabad",
+            "tier": "Tier-II",
+            "population": "7,21,139"
+        },
+        {
+            "id": "61",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Meerut",
+            "tier": "Tier-II",
+            "population": "12,23,184"
+        },
+        {
+            "id": "62",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Ghaziabad",
+            "tier": "Tier-II",
+            "population": "11,99,191"
+        },
+        {
+            "id": "63",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Aligarh",
+            "tier": "Tier-II",
+            "population": "7,53,207"
+        },
+        {
+            "id": "64",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Agra",
+            "tier": "Tier-II",
+            "population": "14,30,055"
+        },
+        {
+            "id": "65",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Bareilly",
+            "tier": "Tier-II",
+            "population": "7,45,435"
+        },
+        {
+            "id": "66",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Lucknow",
+            "tier": "Tier-II",
+            "population": "24,72,011"
+        },
+        {
+            "id": "67",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Kanpur",
+            "tier": "Tier-II",
+            "population": "28,23,249"
+        },
+        {
+            "id": "68",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Allahabad",
+            "tier": "Tier-II",
+            "population": "10,73,438"
+        },
+        {
+            "id": "69",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Gorakhpur",
+            "tier": "Tier-II",
+            "population": "13,24,570"
+        },
+        {
+            "id": "70",
+            "country": "India",
+            "state": "Uttar Pradesh",
+            "city": "Varanasi",
+            "tier": "Tier-II",
+            "population": "11,64,404"
+        },
+        {
+            "id": "71",
+            "country": "India",
+            "state": "Uttarakhand",
+            "city": "Dehra Dun",
+            "tier": "Tier-II",
+            "population": "5,22,081"
+        },
+        {
+            "id": "72",
+            "country": "India",
+            "state": "West Bengal",
+            "city": "Asansol",
+            "tier": "Tier-II",
+            "population": "5,04,271"
+        }
+    ]
+}

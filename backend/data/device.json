@@ -1,0 +1,9 @@
+{
+    "message": "Data succcessfully fetched",
+    "data": [    
+        { "id": 1, "value": "Mobile", "label": "Mobile" },    
+        { "id": 2, "value": "Tablet", "label": "Tablet" },    
+        { "id": 3, "value": "Desktop", "label": "Desktop" }
+    ],
+    "success": true
+}

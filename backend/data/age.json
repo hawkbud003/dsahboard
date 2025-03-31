@@ -1,0 +1,10 @@
+{
+    "message": "Data succcessfully fetched",
+    "data": [    
+        { "id": 2, "value": "25-34", "label": "25-34" },
+        { "id": 3, "value": "35-44", "label": "35-44" },
+        { "id": 4, "value": "45-54", "label": "45-54" },
+        { "id": 5, "value": "55-64", "label": "55-64" }
+    ],
+    "success": true
+}

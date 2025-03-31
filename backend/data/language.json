@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "message": "Data successfully fetched",
+  "data": [
+    { "value": "English", "iso_code": "eng", "id": 0,"label": "English" },
+    { "value": "Hindi", "iso_code": "hi", "id": 1 ,"label": "Hindi" },
+    { "value": "Bengali", "iso_code": "bn", "id": 2 ,"label": "Bengali" },
+    { "value": "Telugu", "iso_code": "te", "id": 3 ,"label": "Telugu" },
+    { "value": "Marathi", "iso_code": "mr", "id": 4 ,"label": "Marathi" },
+    { "value": "Tamil", "iso_code": "ta", "id": 5 ,"label": "Tamil" }
+  ]
+}
+
+  

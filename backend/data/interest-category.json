@@ -1,0 +1,8 @@
+{
+    "message": "Data succcessfully fetched",
+    "data": [    
+        { "id": 1, "value": "Affinity Audiences", "label": "Affinity Audiences" },    
+        { "id": 2, "value": "In-Market Audiences", "label": "In-Market Audiences" }
+    ],
+    "success": true
+}

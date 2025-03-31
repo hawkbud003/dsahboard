@@ -1,0 +1,23 @@
+{
+    "message": "Data succcessfully fetched",
+    "data": {
+        "totalPopulation": 112651331 ,
+        "age":[
+            { "label": "25-34", "percentage":35.6},
+            { "label": "35-44", "percentage":24},
+            { "label": "45-54", "percentage":11.3},
+            { "label": "55-64", "percentage":6}
+        ],
+        "environment":[
+            { "label": "app", "percentage":30},
+            { "label": "web", "percentage":70}
+        ],
+        "carrier":[
+            { "label": "Jio", "percentage":50.61},
+            { "label": "Airtel", "percentage":30.20},
+            { "label": "Vi", "percentage":13.28},
+            { "label": "BSNL", "percentage":3.99}
+        ]
+    },
+    "success": true
+}

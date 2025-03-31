@@ -1,0 +1,21 @@
+{
+    "message": "Data succcessfully fetched",
+    "data": [    
+        { "id": 1, "value": "InMobi","label": "InMobi" },    
+        { "id": 2, "value": "OpenX","label": "OpenX" },    
+        { "id": 3, "value": "ImproveDigital","label": "ImproveDigital" },    
+        { "id": 4, "value": "Pubmatic","label": "Pubmatic" },    
+        { "id": 5, "value": "Xandr","label": "Xandr" },    
+        { "id": 6, "value": "M|SSP","label": "M|SSP" },    
+        { "id": 7, "value": "GoogleAdx","label": "GoogleAdx" },    
+        { "id": 8, "value": "Magnite","label": "Magnite" },    
+        { "id": 9, "value": "Triplelift","label": "Triplelift" },    
+        { "id": 10, "value": "Smaato","label": "Smaato" },    
+        { "id": 11, "value": "Equativ","label": "Equativ" },    
+        { "id": 12, "value": "Medialink-X","label": "Medialink-X" },    
+        { "id": 13, "value": "Index Exchange","label": "Index Exchange" },    
+        { "id": 14, "value": "Axonix","label": "Axonix" },    
+        { "id": 15, "value": "ADS","label": "ADS" }
+    ],
+    "success": true
+}

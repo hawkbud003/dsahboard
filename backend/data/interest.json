@@ -1,0 +1,218 @@
+{
+    "success": true,
+    "message": "Data succcessfully fetched",
+    "data": [
+        [
+            {
+                "id": "1",
+                "category": "Affinity Audiences",
+                "subcategory": "Banking & Finance"
+            },
+            {
+                "id": "2",
+                "category": "Affinity Audiences",
+                "subcategory": "Beauty & Wellness"
+            },
+            {
+                "id": "3",
+                "category": "Affinity Audiences",
+                "subcategory": "Food & Dining"
+            },
+            {
+                "id": "4",
+                "category": "Affinity Audiences",
+                "subcategory": "Home & Garden"
+            },
+            {
+                "id": "5",
+                "category": "Affinity Audiences",
+                "subcategory": "Lifestyles & Hobbies"
+            },
+            {
+                "id": "6",
+                "category": "Affinity Audiences",
+                "subcategory": "Media & Entertainment"
+            },
+            {
+                "id": "7",
+                "category": "Affinity Audiences",
+                "subcategory": "News & Politics"
+            },
+            {
+                "id": "8",
+                "category": "Affinity Audiences",
+                "subcategory": "Shoppers"
+            },
+            {
+                "id": "9",
+                "category": "Affinity Audiences",
+                "subcategory": "Shoppers > Luxury Shoppers"
+            },
+            {
+                "id": "10",
+                "category": "Affinity Audiences",
+                "subcategory": "Shoppers > Shopaholics"
+            },
+            {
+                "id": "11",
+                "category": "Affinity Audiences",
+                "subcategory": "Sports & Fitness"
+            },
+            {
+                "id": "12",
+                "category": "Affinity Audiences",
+                "subcategory": "Technology"
+            },
+            {
+                "id": "13",
+                "category": "Affinity Audiences",
+                "subcategory": "Travel > Business Travelers"
+            },
+            {
+                "id": "14",
+                "category": "Affinity Audiences",
+                "subcategory": "Travel > Travel Buffs > Family Vacationers"
+            },
+            {
+                "id": "15",
+                "category": "Affinity Audiences",
+                "subcategory": "Travel > Travel Buffs > Luxury Travelers"
+            },
+            {
+                "id": "16",
+                "category": "Affinity Audiences",
+                "subcategory": "Vehicles & Transportation > Auto Enthusiasts"
+            },
+            {
+                "id": "17",
+                "category": "Affinity Audiences",
+                "subcategory": "Vehicles & Transportation > Auto Enthusiasts > Motorcycle Enthusiasts"
+            },
+            {
+                "id": "18",
+                "category": "Affinity Audiences",
+                "subcategory": "Vehicles & Transportation > Auto Enthusiasts > Performance & Luxury Vehicle Enthusiasts"
+            },
+            {
+                "id": "19",
+                "category": "Affinity Audiences",
+                "subcategory": "Vehicles & Transportation > Auto Enthusiasts > Truck & SUV Enthusiasts"
+            },
+            {
+                "id": "20",
+                "category": "In-Market Audiences",
+                "subcategory": "Apparel & Accessories > Activewear > Yoga Apparel"
+            },
+            {
+                "id": "21",
+                "category": "In-Market Audiences",
+                "subcategory": "Apparel & Accessories > Eyewear > Eyeglasses & Contact Lenses"
+            },
+            {
+                "id": "22",
+                "category": "In-Market Audiences",
+                "subcategory": "Apparel & Accessories > Formal Wear > Suits & Business Attire"
+            },
+            {
+                "id": "23",
+                "category": "In-Market Audiences",
+                "subcategory": "Autos & Vehicles > Motor Vehicles"
+            },
+            {
+                "id": "24",
+                "category": "In-Market Audiences",
+                "subcategory": "Baby & Children's Products"
+            },
+            {
+                "id": "25",
+                "category": "In-Market Audiences",
+                "subcategory": "Beauty Products & Services"
+            },
+            {
+                "id": "26",
+                "category": "In-Market Audiences",
+                "subcategory": "Business & Industrial Products"
+            },
+            {
+                "id": "27",
+                "category": "In-Market Audiences",
+                "subcategory": "Consumer Electronics > Audio > Headphones & Headsets"
+            },
+            {
+                "id": "28",
+                "category": "In-Market Audiences",
+                "subcategory": "Education"
+            },
+            {
+                "id": "29",
+                "category": "In-Market Audiences",
+                "subcategory": "Event Tickets"
+            },
+            {
+                "id": "30",
+                "category": "In-Market Audiences",
+                "subcategory": "Financial Services > Banking Services > Debit & Checking Services"
+            },
+            {
+                "id": "31",
+                "category": "In-Market Audiences",
+                "subcategory": "Financial Services > Credit & Lending > Auto Loans"
+            },
+            {
+                "id": "32",
+                "category": "In-Market Audiences",
+                "subcategory": "Financial Services > Credit & Lending > Business Loans"
+            },
+            {
+                "id": "33",
+                "category": "In-Market Audiences",
+                "subcategory": "Financial Services > Credit & Lending > Credit Reports & Monitoring Services"
+            },
+            {
+                "id": "34",
+                "category": "In-Market Audiences",
+                "subcategory": "Financial Services > Credit & Lending > Personal Loans"
+            },
+            {
+                "id": "35",
+                "category": "In-Market Audiences",
+                "subcategory": "Financial Services > Credit & Lending > Student Loans"
+            },
+            {
+                "id": "36",
+                "category": "In-Market Audiences",
+                "subcategory": "Food"
+            },
+            {
+                "id": "37",
+                "category": "In-Market Audiences",
+                "subcategory": "Gifts & Occasions"
+            },
+            {
+                "id": "38",
+                "category": "In-Market Audiences",
+                "subcategory": "Home & Garden"
+            },
+            {
+                "id": "39",
+                "category": "In-Market Audiences",
+                "subcategory": "Real Estate > Commercial Properties"
+            },
+            {
+                "id": "40",
+                "category": "In-Market Audiences",
+                "subcategory": "Sports & Fitness"
+            },
+            {
+                "id": "41",
+                "category": "In-Market Audiences",
+                "subcategory": "Travel > Hotels & Accommodations"
+            },
+            {
+                "id": "42",
+                "category": "In-Market Audiences",
+                "subcategory": "Travel > Trips by Destination"
+            }
+        ]
+    ]
+}

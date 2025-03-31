@@ -1,0 +1,11 @@
+{
+    "message": "Data succcessfully fetched",
+    "data": [    
+        { "id": 1, "value": "<10k" , "label": "<10K" },    
+        { "id": 2, "value": "10k-30k" , "label": "10K-30K" },    
+        { "id": 3, "value": "31k-50k" , "label": "31K-50K" },    
+        { "id": 4, "value": "51k-90k" , "label": "51K-90K" },    
+        { "id": 5, "value": ">90k" , "label": ">90K" }
+    ],
+    "success": true
+}

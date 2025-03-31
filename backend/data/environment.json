@@ -1,0 +1,8 @@
+{
+    "message": "Data succcessfully fetched",
+    "data": [    
+        { "id": 1, "value": "App", "label": "App" },
+        { "id": 2, "value": "Web", "label": "Web" }
+    ],
+    "success": true
+}
