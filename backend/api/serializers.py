@@ -25,29 +25,29 @@ class CustomTokenObtainPairSerializer(serializers.Serializer):
         username = data.get("username")
         password = data.get("password")
 
+        if not username or not password:
+            raise serializers.ValidationError("Both username and password are required.")
+
         user = authenticate(username=username, password=password)
         if user is None:
             try:
                 user = User.objects.get(email=username)
                 if not user.check_password(password):
-                    user = None
+                    raise serializers.ValidationError("Invalid credentials")
             except User.DoesNotExist:
-                user = None
-
-        if user is None:
-            raise serializers.ValidationError("Invalid credentials")
+                raise serializers.ValidationError("Invalid credentials")
 
         refresh = RefreshToken.for_user(user)
-        user_type = False
-        user_type = UserType.objects.get(user=user)
-        if user_type.user_type_pm is True:
-            user_type = True
-        else:
-            user_type = False
+        try:
+            user_type = UserType.objects.get(user=user)
+            is_pm = user_type.user_type_pm
+        except UserType.DoesNotExist:
+            is_pm = False
+
         return {
             "refresh": str(refresh),
             "access": str(refresh.access_token),
-            "user_type": user_type,
+            "user_type": is_pm,
         }
 
 

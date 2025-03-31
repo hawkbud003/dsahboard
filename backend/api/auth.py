@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import TokenError
@@ -34,7 +34,9 @@ def error_response(message, status_code=status.HTTP_400_BAD_REQUEST):
     )
 
 from rest_framework.parsers import MultiPartParser, FormParser
+
 class RegisterView(APIView):
+    permission_classes = [AllowAny]
     parser_classes = (MultiPartParser, FormParser)  
     def post(self, request):
         password = request.data.get("password")
@@ -162,14 +164,18 @@ class ChangePasswordAPIView(APIView):
 
 
 class CustomTokenObtainPairView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request, *args, **kwargs):
         serializer = CustomTokenObtainPairSerializer(data=request.data)
         if serializer.is_valid():
-            return Response(
-                {"status": status.HTTP_200_OK, "data": serializer.validated_data},
-                status=status.HTTP_200_OK,
-            )
-        return error_response(serializer.errors)
+            try:
+                data = serializer.validated_data
+                return success_response("Token generated successfully", data)
+            except Exception as e:
+                logger.error(f"Error generating token: {e}")
+                return error_response("Failed to generate token", status.HTTP_401_UNAUTHORIZED)
+        return error_response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
 class CustomTokenRefreshView(TokenRefreshView):
