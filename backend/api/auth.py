@@ -21,17 +21,32 @@ logger = logging.getLogger(__name__)
 
 # Utility Functions
 def success_response(message, data=None, status_code=status.HTTP_200_OK):
-    """Utility for generating a consistent success response."""
-    return Response(
-        {"message": message, "data": data, "success": True}, status=status_code
-    )
+    response_data = {
+        "status": "success",
+        "message": message,
+    }
+    if data is not None:
+        response_data["data"] = data
+    
+    response = Response(response_data, status=status_code)
+    # Add CORS headers
+    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
 
 
 def error_response(message, status_code=status.HTTP_400_BAD_REQUEST):
-    """Utility for generating a consistent error response."""
-    return Response(
-        {"message": message, "success": False, "data": []}, status=status_code
-    )
+    response_data = {
+        "status": "error",
+        "message": message,
+    }
+    response = Response(response_data, status=status_code)
+    # Add CORS headers
+    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
 
 from rest_framework.parsers import MultiPartParser, FormParser
 
@@ -166,12 +181,22 @@ class ChangePasswordAPIView(APIView):
 class CustomTokenObtainPairView(APIView):
     permission_classes = [AllowAny]
     
+    def options(self, request, *args, **kwargs):
+        response = Response(status=status.HTTP_200_OK)
+        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        return response
+    
     def post(self, request, *args, **kwargs):
         serializer = CustomTokenObtainPairSerializer(data=request.data)
         if serializer.is_valid():
             try:
                 data = serializer.validated_data
-                return success_response("Token generated successfully", data)
+                response = success_response("Token generated successfully", data)
+                # Add CORS headers to the response
+                response["Access-Control-Allow-Origin"] = "*"
+                return response
             except Exception as e:
                 logger.error(f"Error generating token: {e}")
                 return error_response("Failed to generate token", status.HTTP_401_UNAUTHORIZED)

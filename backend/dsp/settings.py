@@ -159,6 +159,29 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 
+# Add specific origins if needed
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React default port
+    "http://127.0.0.1:3000",
+    "http://143.110.177.153",  # Your server IP
+    "http://143.110.177.153:80",
+    "http://143.110.177.153:8000",
+    'https://frontenddashboard.vercel.app'
+]
+
+# Allow specific headers
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 
