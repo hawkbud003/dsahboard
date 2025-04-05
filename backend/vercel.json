@@ -22,6 +22,7 @@
     ],
     "env": {
         "DJANGO_SETTINGS_MODULE": "dsp.settings",
-        "PYTHONPATH": "."
+        "PYTHONPATH": ".",
+        "VERCEL": "1"
     }
 } 

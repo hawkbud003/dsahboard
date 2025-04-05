@@ -3,7 +3,6 @@ from datetime import timedelta
 from pathlib import Path
 import environ
 from dotenv import load_dotenv
-import dj_database_url
 
 # Load environment variables
 load_dotenv()
@@ -77,12 +76,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "dsp.wsgi.application"
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database configuration
+if 'VERCEL' in os.environ:
+    # Use in-memory SQLite for Vercel deployment
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
-}
+else:
+    # Use regular SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
