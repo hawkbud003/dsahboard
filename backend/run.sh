@@ -107,6 +107,21 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Install Pillow if not already installed
+print_message "Checking for Pillow..."
+pip show Pillow &> /dev/null
+if [ $? -ne 0 ]; then
+    print_message "Installing Pillow..."
+    pip install Pillow
+    if [ $? -ne 0 ]; then
+        print_error "Failed to install Pillow."
+        exit 1
+    fi
+    print_message "Pillow installed successfully."
+else
+    print_message "Pillow is already installed."
+fi
+
 # Check if .env file exists, if not create from example
 if [ ! -f ".env" ]; then
     print_warning ".env file not found. Creating from .env.example..."
@@ -117,6 +132,12 @@ if [ ! -f ".env" ]; then
         print_error ".env.example file not found. Please create a .env file manually."
         exit 1
     fi
+fi
+
+# Create static directory if it doesn't exist
+if [ ! -d "static" ]; then
+    print_message "Creating static directory..."
+    mkdir -p static
 fi
 
 # Create staticfiles directory if it doesn't exist
