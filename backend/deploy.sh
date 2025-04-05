@@ -32,6 +32,7 @@ CREATE_SUPERUSER=false
 SUPERUSER_USERNAME=""
 SUPERUSER_EMAIL=""
 SUPERUSER_PASSWORD=""
+DOMAIN_NAME=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -78,6 +79,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --superuser-password=*)
             SUPERUSER_PASSWORD="${1#*=}"
+            shift
+            ;;
+        --domain=*)
+            DOMAIN_NAME="${1#*=}"
             shift
             ;;
         *)
@@ -272,12 +277,55 @@ if [ "$SETUP_NGINX" = true ]; then
     print_message "Creating Nginx configuration for the Django application..."
     NGINX_CONF="/etc/nginx/sites-available/django_app"
     NGINX_ENABLED="/etc/nginx/sites-enabled/django_app"
+    DEFAULT_CONF="/etc/nginx/sites-enabled/default"
+
+    # Remove default Nginx configuration if it exists
+    if [ -f "$DEFAULT_CONF" ]; then
+        print_message "Removing default Nginx configuration..."
+        sudo rm $DEFAULT_CONF
+    fi
+
+    # Check if domain name is provided
+    if [ -z "$DOMAIN_NAME" ]; then
+        print_warning "No domain name provided. Using server IP address for configuration."
+        DOMAIN_NAME="143.110.177.153"  # Default to the IP address you provided
+    fi
+
+    # Install certbot if not already installed
+    print_message "Checking if Certbot is installed..."
+    if ! command -v certbot &> /dev/null; then
+        print_message "Installing Certbot for SSL certificate..."
+        sudo apt update
+        sudo apt install -y certbot python3-certbot-nginx
+        if [ $? -ne 0 ]; then
+            print_warning "Failed to install Certbot. Continuing without SSL..."
+            USE_SSL=false
+        else
+            print_message "Certbot installed successfully."
+            USE_SSL=true
+        fi
+    else
+        print_message "Certbot is already installed."
+        USE_SSL=true
+    fi
 
     # Create the configuration file
     sudo tee $NGINX_CONF > /dev/null << EOF
 server {
     listen 80;
-    server_name _;  # Match all server names
+    server_name $DOMAIN_NAME;
+    
+    # Redirect all HTTP traffic to HTTPS
+    location / {
+        return 301 https://\$host\$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name $DOMAIN_NAME;
+
+    # SSL configuration will be added by Certbot
 
     # Handle preflight requests
     location = /options {
@@ -365,6 +413,17 @@ EOF
         print_error "Failed to restart Nginx. Please check the configuration."
         exit 1
     fi
+
+    # Obtain SSL certificate if Certbot is available
+    if [ "$USE_SSL" = true ]; then
+        print_message "Obtaining SSL certificate for $DOMAIN_NAME..."
+        sudo certbot --nginx -d $DOMAIN_NAME --non-interactive --agree-tos --email admin@$DOMAIN_NAME --redirect
+        if [ $? -ne 0 ]; then
+            print_warning "Failed to obtain SSL certificate. Your site will still work but without HTTPS."
+        else
+            print_message "SSL certificate obtained successfully."
+        fi
+    fi
 fi
 
 # Check if the application is running
@@ -394,9 +453,15 @@ print_message "Deployment completed successfully."
 print_message "Your application is now running with Gunicorn on port $PORT."
 if [ "$SETUP_NGINX" = true ]; then
     print_message "Nginx is listening on port 80 and forwarding requests to Gunicorn on port $PORT."
-    print_message "The application is accessible at http://your-server-ip/"
+    if [ "$USE_SSL" = true ]; then
+        print_message "HTTPS is enabled. The application is accessible at https://$DOMAIN_NAME/"
+        print_message "All HTTP traffic is automatically redirected to HTTPS."
+    else
+        print_message "HTTPS is not enabled. The application is accessible at http://$DOMAIN_NAME/"
+        print_message "To enable HTTPS, run the script again with a valid domain name: ./deploy.sh --domain=your-domain.com"
+    fi
     print_message "CORS headers have been properly configured in Nginx."
 else
-    print_message "The application is accessible at http://your-server-ip:$PORT/"
+    print_message "The application is accessible at http://$DOMAIN_NAME:$PORT/"
 fi
 print_message "If you're experiencing CORS issues, please check your frontend code to ensure it's sending the correct headers." 
