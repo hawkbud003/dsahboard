@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/dsp/wsgi.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "backend/static/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "backend/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "backend/dsp/wsgi.py"
+    }
+  ]
+} 

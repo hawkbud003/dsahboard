@@ -1,9 +1,6 @@
-import pymysql
-pymysql.install_as_MySQLdb()
-
+import os
 from datetime import timedelta
 from pathlib import Path
-import os
 import environ
 from dotenv import load_dotenv
 import dj_database_url
@@ -82,13 +79,8 @@ WSGI_APPLICATION = "dsp.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME':  env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),   # Or an IP Address that your DB is hosted on
-        'PORT': env('DB_PORT'),
-       
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -190,10 +182,15 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Use WhiteNoise for static files in production
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
