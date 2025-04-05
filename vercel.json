@@ -13,11 +13,15 @@
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "backend/static/$1"
+      "dest": "/static/$1"
     },
     {
       "src": "/(.*)",
       "dest": "backend/dsp/wsgi.py"
     }
-  ]
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "dsp.settings",
+    "PYTHONPATH": "backend"
+  }
 } 
