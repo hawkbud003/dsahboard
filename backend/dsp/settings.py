@@ -54,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "api.middleware.CORSMiddleware",
 ]
 
 ROOT_URLCONF = "dsp.urls"
@@ -166,7 +167,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://143.110.177.153",  # Your server IP
     "http://143.110.177.153:80",
     "http://143.110.177.153:8000",
-    'https://frontenddashboard.vercel.app'
+    'https://frontenddashboard.vercel.app',
+    # Add your frontend domain here
+    "http://your-frontend-domain.com",
+    "https://your-frontend-domain.com",
 ]
 
 # Allow specific headers
@@ -180,6 +184,14 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
+]
+
+# Expose headers to the frontend
+CORS_EXPOSE_HEADERS = [
+    "access-control-allow-origin",
+    "access-control-allow-credentials",
+    "access-control-allow-methods",
+    "access-control-allow-headers",
 ]
 
 CSRF_COOKIE_SECURE = False

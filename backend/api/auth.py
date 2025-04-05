@@ -185,10 +185,14 @@ class CustomTokenObtainPairView(APIView):
         response = Response(status=status.HTTP_200_OK)
         response["Access-Control-Allow-Origin"] = "*"
         response["Access-Control-Allow-Methods"] = "POST, OPTIONS"
-        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+        response["Access-Control-Max-Age"] = "86400"  # 24 hours
         return response
     
     def post(self, request, *args, **kwargs):
+        # Add CORS headers to the request
+        request.META['HTTP_ACCESS_CONTROL_ALLOW_ORIGIN'] = '*'
+        
         serializer = CustomTokenObtainPairSerializer(data=request.data)
         if serializer.is_valid():
             try:
@@ -196,11 +200,17 @@ class CustomTokenObtainPairView(APIView):
                 response = success_response("Token generated successfully", data)
                 # Add CORS headers to the response
                 response["Access-Control-Allow-Origin"] = "*"
+                response["Access-Control-Allow-Credentials"] = "true"
                 return response
             except Exception as e:
                 logger.error(f"Error generating token: {e}")
-                return error_response("Failed to generate token", status.HTTP_401_UNAUTHORIZED)
-        return error_response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+                error_resp = error_response("Failed to generate token", status.HTTP_401_UNAUTHORIZED)
+                error_resp["Access-Control-Allow-Origin"] = "*"
+                return error_resp
+        
+        error_resp = error_response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        error_resp["Access-Control-Allow-Origin"] = "*"
+        return error_resp
 
 
 class CustomTokenRefreshView(TokenRefreshView):
