@@ -14,4 +14,5 @@ setuptools==69.1.1
 django-storages
 django-cors-headers
 pandas
-XlsxWriter 
+XlsxWriter
+psycopg2-binary==2.9.9 
