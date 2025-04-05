@@ -24,6 +24,7 @@ USE_GUNICORN=false
 PORT=8000
 WORKERS=4
 FORCE_VENV_RECREATE=false
+SKIP_MIGRATIONS=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -41,6 +42,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --recreate-venv)
             FORCE_VENV_RECREATE=true
+            shift
+            ;;
+        --skip-migrations)
+            SKIP_MIGRATIONS=true
             shift
             ;;
         *)
@@ -153,12 +158,24 @@ if [ $? -ne 0 ]; then
     print_warning "Failed to collect static files. Continuing anyway..."
 fi
 
-# Run migrations
-print_message "Running database migrations..."
-python manage.py migrate
-if [ $? -ne 0 ]; then
-    print_error "Failed to run migrations. Please check your database settings."
-    exit 1
+# Run migrations if not skipped
+if [ "$SKIP_MIGRATIONS" = false ]; then
+    # Make migrations for api app
+    print_message "Making migrations for api app..."
+    python manage.py makemigrations api
+    if [ $? -ne 0 ]; then
+        print_warning "Failed to make migrations for api app. Continuing anyway..."
+    fi
+    
+    # Run migrations
+    print_message "Running database migrations..."
+    python manage.py migrate
+    if [ $? -ne 0 ]; then
+        print_error "Failed to run migrations. Please check your database settings."
+        exit 1
+    fi
+else
+    print_message "Skipping migrations as requested."
 fi
 
 # Check if superuser exists
