@@ -1,3 +1,6 @@
+import pymysql
+pymysql.install_as_MySQLdb()
+
 from datetime import timedelta
 from pathlib import Path
 import os
