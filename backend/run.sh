@@ -19,6 +19,32 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Parse command line arguments
+USE_GUNICORN=false
+PORT=8000
+WORKERS=4
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --gunicorn)
+            USE_GUNICORN=true
+            shift
+            ;;
+        --port=*)
+            PORT="${1#*=}"
+            shift
+            ;;
+        --workers=*)
+            WORKERS="${1#*=}"
+            shift
+            ;;
+        *)
+            print_warning "Unknown option: $1"
+            shift
+            ;;
+    esac
+done
+
 # Check if Python is installed
 if ! command -v python3 &> /dev/null; then
     print_error "Python 3 is not installed. Please install Python 3 and try again."
@@ -96,8 +122,15 @@ fi
 print_message "Checking for superuser..."
 python -c "from django.contrib.auth import get_user_model; User = get_user_model(); print('Superuser exists' if User.objects.filter(is_superuser=True).exists() else 'No superuser found')" 2>/dev/null || print_warning "Could not check for superuser."
 
-# Run the development server
-print_message "Starting Django development server..."
-print_message "The application will be available at http://127.0.0.1:8000/"
-print_message "Press Ctrl+C to stop the server."
-python manage.py runserver 
+# Run the application
+if [ "$USE_GUNICORN" = true ]; then
+    print_message "Starting Gunicorn server..."
+    print_message "The application will be available at http://127.0.0.1:$PORT/"
+    print_message "Press Ctrl+C to stop the server."
+    gunicorn dsp.wsgi:application --bind 0.0.0.0:$PORT --workers $WORKERS
+else
+    print_message "Starting Django development server..."
+    print_message "The application will be available at http://127.0.0.1:$PORT/"
+    print_message "Press Ctrl+C to stop the server."
+    python manage.py runserver 0.0.0.0:$PORT
+fi 
