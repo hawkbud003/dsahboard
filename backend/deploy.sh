@@ -279,12 +279,6 @@ server {
     listen 80;
     server_name _;  # Match all server names
 
-    # CORS headers
-    add_header 'Access-Control-Allow-Origin' '*' always;
-    add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
-    add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
-    add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
-
     # Handle preflight requests
     if (\$request_method = 'OPTIONS') {
         add_header 'Access-Control-Allow-Origin' '*';
@@ -312,10 +306,22 @@ server {
 
     location /static/ {
         alias /var/www/static/;
+        
+        # CORS headers for static files
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
     }
 
     location /media/ {
         alias /var/www/media/;
+        
+        # CORS headers for media files
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
     }
 }
 EOF
