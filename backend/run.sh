@@ -25,6 +25,10 @@ PORT=8000
 WORKERS=4
 FORCE_VENV_RECREATE=false
 SKIP_MIGRATIONS=false
+USE_PORT_80=false
+RUN_IN_BACKGROUND=false
+LOG_FILE="app.log"
+PID_FILE="app.pid"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -34,6 +38,11 @@ while [[ $# -gt 0 ]]; do
             ;;
         --port=*)
             PORT="${1#*=}"
+            shift
+            ;;
+        --port80)
+            USE_PORT_80=true
+            PORT=80
             shift
             ;;
         --workers=*)
@@ -46,6 +55,14 @@ while [[ $# -gt 0 ]]; do
             ;;
         --skip-migrations)
             SKIP_MIGRATIONS=true
+            shift
+            ;;
+        --background)
+            RUN_IN_BACKGROUND=true
+            shift
+            ;;
+        --log=*)
+            LOG_FILE="${1#*=}"
             shift
             ;;
         *)
@@ -64,6 +81,22 @@ fi
 # Check if PostgreSQL is installed
 if ! command -v psql &> /dev/null; then
     print_warning "PostgreSQL is not installed or not in PATH. Make sure it's installed and running."
+fi
+
+# Check if running on port 80 and if we have sufficient privileges
+if [ "$USE_PORT_80" = true ] && [ "$EUID" -ne 0 ]; then
+    print_warning "Running on port 80 requires root privileges."
+    print_warning "Please run the script with sudo or as an administrator."
+    print_warning "Example: sudo ./run.sh --gunicorn --port80"
+    read -p "Do you want to continue with port 8000 instead? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        print_message "Exiting..."
+        exit 1
+    else
+        USE_PORT_80=false
+        PORT=8000
+    fi
 fi
 
 # Create or recreate virtual environment
@@ -182,15 +215,48 @@ fi
 print_message "Checking for superuser..."
 python -c "from django.contrib.auth import get_user_model; User = get_user_model(); print('Superuser exists' if User.objects.filter(is_superuser=True).exists() else 'No superuser found')" 2>/dev/null || print_warning "Could not check for superuser."
 
-# Run the application
-if [ "$USE_GUNICORN" = true ]; then
-    print_message "Starting Gunicorn server..."
-    print_message "The application will be available at http://127.0.0.1:$PORT/"
-    print_message "Press Ctrl+C to stop the server."
-    gunicorn dsp.wsgi:application --bind 0.0.0.0:$PORT --workers $WORKERS
-else
-    print_message "Starting Django development server..."
-    print_message "The application will be available at http://127.0.0.1:$PORT/"
-    print_message "Press Ctrl+C to stop the server."
-    python manage.py runserver 0.0.0.0:$PORT
-fi 
+# Function to start the application
+start_application() {
+    if [ "$USE_GUNICORN" = true ]; then
+        print_message "Starting Gunicorn server..."
+        print_message "The application will be available at http://127.0.0.1:$PORT/"
+        
+        # Set up Gunicorn with appropriate options
+        GUNICORN_CMD="gunicorn dsp.wsgi:application --bind 0.0.0.0:$PORT --workers $WORKERS"
+        
+        # Add additional options for production
+        if [ "$USE_PORT_80" = true ]; then
+            print_message "Running in production mode on port 80"
+            GUNICORN_CMD="$GUNICORN_CMD --access-logfile - --error-logfile - --capture-output --log-level info"
+        fi
+        
+        # Run Gunicorn
+        if [ "$RUN_IN_BACKGROUND" = true ]; then
+            print_message "Running in background mode. Logs will be written to $LOG_FILE"
+            print_message "Process ID will be saved to $PID_FILE"
+            nohup $GUNICORN_CMD > $LOG_FILE 2>&1 &
+            echo $! > $PID_FILE
+            print_message "Application started with PID $(cat $PID_FILE)"
+        else
+            print_message "Press Ctrl+C to stop the server."
+            eval $GUNICORN_CMD
+        fi
+    else
+        print_message "Starting Django development server..."
+        print_message "The application will be available at http://127.0.0.1:$PORT/"
+        
+        if [ "$RUN_IN_BACKGROUND" = true ]; then
+            print_message "Running in background mode. Logs will be written to $LOG_FILE"
+            print_message "Process ID will be saved to $PID_FILE"
+            nohup python manage.py runserver 0.0.0.0:$PORT > $LOG_FILE 2>&1 &
+            echo $! > $PID_FILE
+            print_message "Application started with PID $(cat $PID_FILE)"
+        else
+            print_message "Press Ctrl+C to stop the server."
+            python manage.py runserver 0.0.0.0:$PORT
+        fi
+    fi
+}
+
+# Start the application
+start_application 
