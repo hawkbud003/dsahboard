@@ -65,8 +65,8 @@ if [ -f "$DEFAULT_CONF" ]; then
     rm $DEFAULT_CONF
 fi
 
-# Create a basic Nginx configuration for the domain
-print_message "Creating Nginx configuration for $DOMAIN_NAME..."
+# Create a basic Nginx configuration for the domain (HTTP only)
+print_message "Creating initial Nginx configuration for $DOMAIN_NAME..."
 mkdir -p /etc/nginx/sites-available
 cat > $NGINX_CONF << EOF
 server {
@@ -107,12 +107,97 @@ fi
 
 # Obtain SSL certificate
 print_message "Obtaining SSL certificate for $DOMAIN_NAME..."
-certbot --nginx -d $DOMAIN_NAME --non-interactive --agree-tos --email admin@$DOMAIN_NAME --redirect
+certbot --nginx -d $DOMAIN_NAME --non-interactive --agree-tos --email admin@$DOMAIN_NAME
 if [ $? -ne 0 ]; then
     print_error "Failed to obtain SSL certificate."
     print_message "Please make sure your domain's DNS A record points to this server's IP address."
     print_message "You can try running the command manually:"
     print_message "certbot --nginx -d $DOMAIN_NAME"
+    exit 1
+fi
+
+# Now that we have the certificate, let's update the Nginx configuration to include HTTPS
+print_message "Updating Nginx configuration to include HTTPS..."
+cat > $NGINX_CONF << EOF
+server {
+    listen 80;
+    server_name $DOMAIN_NAME;
+    return 301 https://\$host\$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name $DOMAIN_NAME;
+    
+    ssl_certificate /etc/letsencrypt/live/$DOMAIN_NAME/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN_NAME/privkey.pem;
+    
+    # SSL configuration
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+    
+    # HSTS (uncomment if you're sure)
+    # add_header Strict-Transport-Security "max-age=63072000" always;
+    
+    # Handle preflight requests
+    if (\$request_method = 'OPTIONS') {
+        add_header 'Access-Control-Allow-Origin' 'https://frontenddashboard.vercel.app' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        add_header 'Access-Control-Max-Age' 1728000;
+        add_header 'Content-Type' 'text/plain charset=UTF-8';
+        add_header 'Content-Length' 0;
+        return 204;
+    }
+    
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        
+        # CORS headers
+        add_header 'Access-Control-Allow-Origin' 'https://frontenddashboard.vercel.app' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+    }
+    
+    # Specific location for API endpoints
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        
+        # CORS headers for API
+        add_header 'Access-Control-Allow-Origin' 'https://frontenddashboard.vercel.app' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+    }
+}
+EOF
+
+# Test Nginx configuration again
+print_message "Testing updated Nginx configuration..."
+nginx -t
+if [ $? -ne 0 ]; then
+    print_error "Nginx configuration test failed after SSL setup. Please check the configuration."
+    exit 1
+fi
+
+# Restart Nginx
+print_message "Restarting Nginx with SSL configuration..."
+systemctl restart nginx
+if [ $? -ne 0 ]; then
+    print_error "Failed to restart Nginx with SSL configuration."
     exit 1
 fi
 

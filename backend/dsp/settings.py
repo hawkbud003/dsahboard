@@ -23,6 +23,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     'frontenddashboard.vercel.app'
+    
     "13.233.13.8"
     
 ]
@@ -168,9 +169,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://143.110.177.153:80",
     "http://143.110.177.153:8000",
     'https://frontenddashboard.vercel.app',
-    # Add your frontend domain here
-    "http://your-frontend-domain.com",
-    "https://your-frontend-domain.com",
 ]
 
 # Allow specific headers
