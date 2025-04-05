@@ -138,7 +138,7 @@ class Campaign(models.Model):
     ctr = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     views = models.PositiveIntegerField(default=0)
     vtr = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
-    
+    payment = models.CharField(max_length=50, blank=True, null=True)
     buy_type = models.CharField(max_length=50, choices=[('CPM', 'CPM'), ('CVC', 'CVC'), ('CPV', 'CPV'),('CPC', 'CPC'), ('OTHER', 'OTHER')], blank=True, null=True)
     unit_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
