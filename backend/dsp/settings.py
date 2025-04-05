@@ -78,11 +78,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "dsp.wsgi.application"
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=env('DATABASE_URL', default='postgres://postgres:postgres@localhost:5432/campaign_manager'),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME':  env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),   # Or an IP Address that your DB is hosted on
+        'PORT': env('DB_PORT'),
+       
+    }
 }
 
 AUTHENTICATION_BACKENDS = (
