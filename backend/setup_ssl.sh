@@ -143,14 +143,8 @@ server {
     # HSTS (uncomment if you're sure)
     # add_header Strict-Transport-Security "max-age=63072000" always;
     
-    # Handle preflight requests
+    # Handle OPTIONS requests
     if (\$request_method = 'OPTIONS') {
-        add_header 'Access-Control-Allow-Origin' 'https://frontenddashboard.vercel.app' always;
-        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
-        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
-        add_header 'Access-Control-Max-Age' 1728000;
-        add_header 'Content-Type' 'text/plain charset=UTF-8';
-        add_header 'Content-Length' 0;
         return 204;
     }
     
