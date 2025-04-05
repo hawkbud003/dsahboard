@@ -23,6 +23,7 @@ print_error() {
 USE_GUNICORN=false
 PORT=8000
 WORKERS=4
+FORCE_VENV_RECREATE=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -36,6 +37,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --workers=*)
             WORKERS="${1#*=}"
+            shift
+            ;;
+        --recreate-venv)
+            FORCE_VENV_RECREATE=true
             shift
             ;;
         *)
@@ -56,8 +61,13 @@ if ! command -v psql &> /dev/null; then
     print_warning "PostgreSQL is not installed or not in PATH. Make sure it's installed and running."
 fi
 
-# Create virtual environment if it doesn't exist
-if [ ! -d "venv" ]; then
+# Create or recreate virtual environment
+if [ ! -d "venv" ] || [ "$FORCE_VENV_RECREATE" = true ]; then
+    if [ -d "venv" ]; then
+        print_message "Removing existing virtual environment..."
+        rm -rf venv
+    fi
+    
     print_message "Creating virtual environment..."
     python3 -m venv venv
     if [ $? -ne 0 ]; then
@@ -67,6 +77,18 @@ if [ ! -d "venv" ]; then
     print_message "Virtual environment created successfully."
 else
     print_message "Using existing virtual environment."
+fi
+
+# Check if activate script exists
+if [ ! -f "venv/bin/activate" ]; then
+    print_error "Virtual environment activation script not found. Recreating virtual environment..."
+    rm -rf venv
+    python3 -m venv venv
+    if [ $? -ne 0 ]; then
+        print_error "Failed to create virtual environment. Please check your Python installation."
+        exit 1
+    fi
+    print_message "Virtual environment recreated successfully."
 fi
 
 # Activate virtual environment
