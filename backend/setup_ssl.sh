@@ -143,10 +143,19 @@ server {
     # HSTS (uncomment if you're sure)
     # add_header Strict-Transport-Security "max-age=63072000" always;
     
+    # Increase maximum allowed request size
+    client_max_body_size 10M;
+    
     # Handle OPTIONS requests
     if (\$request_method = 'OPTIONS') {
         return 204;
     }
+    
+    # Global CORS headers
+    add_header 'Access-Control-Allow-Origin' 'https://frontenddashboard.vercel.app' always;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+    add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+    add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
     
     location / {
         proxy_pass http://127.0.0.1:8000;
@@ -155,11 +164,14 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
         
-        # CORS headers
-        add_header 'Access-Control-Allow-Origin' 'https://frontenddashboard.vercel.app' always;
-        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
-        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
-        add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+        # Increase maximum allowed request size for this location
+        client_max_body_size 10M;
+        
+        # Remove CORS headers from the backend response
+        proxy_hide_header 'Access-Control-Allow-Origin';
+        proxy_hide_header 'Access-Control-Allow-Methods';
+        proxy_hide_header 'Access-Control-Allow-Headers';
+        proxy_hide_header 'Access-Control-Expose-Headers';
     }
     
     # Specific location for API endpoints
@@ -170,11 +182,14 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
         
-        # CORS headers for API
-        add_header 'Access-Control-Allow-Origin' 'https://frontenddashboard.vercel.app' always;
-        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
-        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
-        add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+        # Increase maximum allowed request size for API endpoints
+        client_max_body_size 10M;
+        
+        # Remove CORS headers from the backend response
+        proxy_hide_header 'Access-Control-Allow-Origin';
+        proxy_hide_header 'Access-Control-Allow-Methods';
+        proxy_hide_header 'Access-Control-Allow-Headers';
+        proxy_hide_header 'Access-Control-Expose-Headers';
     }
 }
 EOF
