@@ -105,9 +105,22 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class LocationSerializer(serializers.ModelSerializer):
+    population = serializers.SerializerMethodField()
+    
     class Meta:
         model = Location
         fields = ["id", "country", "state", "city", "tier", "population"]
+    
+    def get_population(self, obj):
+        # Convert population string to integer by removing commas and converting to int
+        try:
+            # Remove commas from the population string
+            population_str = obj.population.replace(',', '')
+            # Convert to integer
+            return int(population_str)
+        except (ValueError, AttributeError):
+            # Return 0 if conversion fails
+            return 0
 
 
 class target_typeSerializer(serializers.ModelSerializer):
