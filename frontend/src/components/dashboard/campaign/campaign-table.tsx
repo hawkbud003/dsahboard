@@ -215,7 +215,7 @@ export function CampaignTable({
                 {shouldShowColumn('Budget') && 
                   <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.total_budget}</TableCell>}
                 {shouldShowColumn('Budget Used') && 
-                  <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.payment}</TableCell>}
+                  <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.payment!==null && row.payment!==undefined? row.payment:0}</TableCell>}
                 {shouldShowColumn('Impression') && <TableCell sx={tableCellStyles}>{row.impressions}</TableCell>}
                 {shouldShowColumn('Click') && <TableCell sx={tableCellStyles}>{row.clicks}</TableCell>}
                 {shouldShowColumn('CTR') && <TableCell sx={tableCellStyles}>{row.ctr}</TableCell>}
