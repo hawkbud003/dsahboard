@@ -59,7 +59,8 @@ export interface Campaign {
     brand_safety: number;
     user:User,
     campaign_files:FileUpload[],
-    creative:Creative[]
+    creative:Creative[],
+    payment:number
 }
 
 export interface CampaignFormData  {

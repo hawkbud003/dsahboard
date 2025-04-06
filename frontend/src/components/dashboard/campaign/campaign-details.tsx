@@ -114,6 +114,7 @@ export function CampaignDetailsPopOver({onClose, open, data }: CampaignDetailsPo
                   'Unit Rate': data?.unit_rate !== undefined ? `₹${data.unit_rate}` : 'N/A',
                   'Start Time': data?.start_time,
                   'End Time': data?.end_time,
+                  "Budget Used": data?.payment !== undefined ? `₹${data.payment}` : 'N/A',
                   Clicks: data?.clicks,
                   Impressions: data?.impressions,
                   CTR: data?.ctr,
