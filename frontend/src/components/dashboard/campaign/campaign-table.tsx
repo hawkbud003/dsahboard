@@ -58,7 +58,7 @@ const COLUMN_MAPPING = {
   'Unit Rate': 'unit_rate',
   'Budget': 'budget',
   'Impression': 'impressions',
-  'Budget Used': 'payments',
+  'Budget Used': 'payment',
   'Click': 'clicks',
   'CTR': 'ctr',
   'Views': 'views',
