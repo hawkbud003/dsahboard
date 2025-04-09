@@ -15,4 +15,5 @@ django-storages
 django-cors-headers
 pandas
 XlsxWriter
+openpyxl
 psycopg2-binary==2.9.9 
