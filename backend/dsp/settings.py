@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "storages",
     "corsheaders",
     "dsp",
+    "django_crontab",
 ]
 
 MIDDLEWARE = [
@@ -80,12 +81,8 @@ WSGI_APPLICATION = "dsp.wsgi.application"
 # Database configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -235,4 +232,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 INSTALLED_APPS += ["rest_framework_simplejwt.token_blacklist"]
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
+
+# Cronjob settings
+CRONJOBS = [
+    ('0 0 * * *', 'dsp.backup_utils.backup_database_to_s3')  # Run at midnight every day
+]
 
