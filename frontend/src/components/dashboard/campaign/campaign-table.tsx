@@ -211,13 +211,13 @@ export function CampaignTable({
                 {shouldShowColumn('Objective') && <TableCell sx={tableCellStyles}>{row.objective}</TableCell>}
                 {shouldShowColumn('Buy Type') && <TableCell sx={tableCellStyles}>{row.buy_type}</TableCell>}
                 {shouldShowColumn('Unit Rate') && 
-                  <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.unit_rate !== null && row.unit_rate !== undefined ? row.unit_rate.toLocaleString('en-IN') : 0}</TableCell>}
+                  <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.unit_rate !== null && row.unit_rate !== undefined ? row.unit_rate.toLocaleString() : 0}</TableCell>}
                 {shouldShowColumn('Budget') && 
-                  <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.total_budget !== null && row.total_budget !== undefined ? Number(row.total_budget).toLocaleString('en-IN') : 0}</TableCell>}
+                  <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.total_budget !== null && row.total_budget !== undefined ? Number(row.total_budget).toLocaleString() : 0}</TableCell>}
                 {shouldShowColumn('Spend') && 
-                  <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.payment !== null && row.payment !== undefined ? Number(row.payment).toLocaleString('en-IN') : 0}</TableCell>}
-                {shouldShowColumn('Impression') && <TableCell sx={tableCellStyles}>{row.impressions.toLocaleString('en-IN')}</TableCell>}
-                {shouldShowColumn('Click') && <TableCell sx={tableCellStyles}>{row.clicks.toLocaleString('en-IN')}</TableCell>}
+                  <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.payment !== null && row.payment !== undefined ? Number(row.payment).toLocaleString() : 0}</TableCell>}
+                {shouldShowColumn('Impression') && <TableCell sx={tableCellStyles}>{row.impressions.toLocaleString()}</TableCell>}
+                {shouldShowColumn('Click') && <TableCell sx={tableCellStyles}>{row.clicks.toLocaleString()}</TableCell>}
                 {shouldShowColumn('CTR') && <TableCell sx={tableCellStyles}>{row.ctr}</TableCell>}
                 {shouldShowColumn('Views') && <TableCell sx={tableCellStyles}>{row.views}</TableCell>}
                 {shouldShowColumn('VTR') && <TableCell sx={tableCellStyles}>{row.vtr}</TableCell>}

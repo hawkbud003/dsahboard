@@ -26,11 +26,14 @@ function formatCurrency(value: number) {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
+    maximumFractionDigits: 0
   }).format(value);
 }
 
 function formatNumber(value: number) {
-  return new Intl.NumberFormat('en-IN').format(value);
+  return new Intl.NumberFormat('en-IN', {
+    maximumFractionDigits: 0
+  }).format(value);
 }
 
 export function DashboardCharts() {
@@ -134,7 +137,7 @@ export function DashboardCharts() {
                       return formatNumber(value as number);
                     }}
                   />
-                  <Legend wrapperStyle={{ paddingTop: 20 }} />
+                  <Legend wrapperStyle={{ paddingTop: 10 }} />
                   <Area
                     yAxisId="left"
                     type="monotone"
@@ -226,7 +229,7 @@ export function DashboardCharts() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    outerRadius={80}
+                    outerRadius={90}
                     fill="#8884d8"
                     dataKey="value"
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
@@ -236,7 +239,7 @@ export function DashboardCharts() {
                     ))}
                   </Pie>
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Legend wrapperStyle={{ paddingTop: 20 }} />
+                  <Legend wrapperStyle={{ paddingTop: 10 }} />
                 </PieChart>
               </ResponsiveContainer>
             </Box>
@@ -270,7 +273,7 @@ export function DashboardCharts() {
                       return formatNumber(value as number);
                     }}
                   />
-                  <Legend wrapperStyle={{ paddingTop: 20 }} />
+                  <Legend wrapperStyle={{ paddingTop: 10 }} />
                   <Bar dataKey="impressions" fill="#8884d8" name="Impressions" />
                   <Bar dataKey="clicks" fill="#82ca9d" name="Clicks" />
                   <Bar dataKey="views" fill="#ffc658" name="Views" />
