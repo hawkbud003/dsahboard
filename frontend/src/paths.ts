@@ -10,6 +10,7 @@ export const paths = {
     createCampaign: '/dashboard/campaign/create',
     creative: '/dashboard/creative',
     creativeCreate: '/dashboard/creative/create',
+    analysis: '/dashboard/home',
   },
   errors: { notFound: '/errors/not-found' },
 } as const;
