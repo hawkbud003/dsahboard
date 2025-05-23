@@ -307,7 +307,7 @@ def serializer_data_to_excel(serializer_data):
     # Create a DataFrame from the data.
     df = pd.DataFrame(data)
     
-    columns_to_remove = ['images', 'keywords', 'proximity_store', 'proximity', 'weather', 'target_type', 'location', 'video', 'tag_tracker','age','carrier_data','environment','exchange','language','impression','device_price','device','created_at','updated_at','carrier','landing_page','reports_url','start_time','end_time','status','day_part','objective','user','campaign_files','total_budget','viewability','brand_safety','buy_type','unit_rate']
+    columns_to_remove = ['creative','images', 'keywords', 'proximity_store', 'proximity', 'weather', 'target_type', 'location', 'video', 'tag_tracker','age','carrier_data','environment','exchange','language','impression','device_price','device','created_at','updated_at','carrier','landing_page','reports_url','start_time','end_time','status','day_part','objective','user','campaign_files','total_budget','viewability','brand_safety','buy_type','unit_rate']
 
     # Drop these columns if they exist (ignore if they don't)
     df.drop(columns=columns_to_remove, inplace=True, errors='ignore')

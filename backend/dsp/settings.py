@@ -22,9 +22,10 @@ ALLOWED_HOSTS = [
     '.vercel.app',
     "127.0.0.1",
     "localhost",
+    "localhost:8000",
     'frontenddashboard.vercel.app'
-    
-    "13.233.13.8"
+    'backendcamp.zapto.org'
+    "172.105.58.203",
     
 ]
 
@@ -158,13 +159,25 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Add specific origins if needed
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React default port
-    "http://127.0.0.1:3000",
-    "http://143.110.177.153",  # Your server IP
-    "http://143.110.177.153:80",
-    "http://143.110.177.153:8000",
+    'https://frontenddashboard.vercel.app',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:8000',
+    'http://localhost',
+]
+
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = [
+    'https://backendcamp.zapto.org',
+    'http://backendcamp.zapto.org',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:8000',
+    'http://localhost',
     'https://frontenddashboard.vercel.app',
 ]
+
+
 
 # Allow specific headers
 CORS_ALLOW_HEADERS = [
@@ -177,6 +190,10 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
+    "access-control-allow-origin",
+    "access-control-allow-headers",
+    "access-control-allow-methods",
+    "access-control-allow-credentials",
 ]
 
 # Expose headers to the frontend
@@ -187,9 +204,6 @@ CORS_EXPOSE_HEADERS = [
     "access-control-allow-headers",
 ]
 
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
-
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -198,6 +212,11 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
+
+# File Upload Settings
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB in bytes
+FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB in bytes
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
 
 # AWS S3 Settings
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
@@ -230,8 +249,6 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 INSTALLED_APPS += ["rest_framework_simplejwt.token_blacklist"]
-
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
 
 # Cronjob settings
 CRONJOBS = [

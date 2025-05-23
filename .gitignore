@@ -33,7 +33,7 @@ staticfiles/
 env/
 venv/
 ENV/
-
+myenv/
 # IDE
 .idea/
 .vscode/

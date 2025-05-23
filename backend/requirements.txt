@@ -17,3 +17,5 @@ pandas
 XlsxWriter
 openpyxl
 psycopg2-binary==2.9.9 
+django-crontab
+Pillow

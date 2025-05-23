@@ -6,6 +6,7 @@ COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /app
 WORKDIR /app
+RUN mkdir -p /app/data && chmod 777 /app/data
 RUN chmod +x /app/entrypoint.sh
 EXPOSE 80
 ENTRYPOINT ["/app/entrypoint.sh"]
