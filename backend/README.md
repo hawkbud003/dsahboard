@@ -1,4 +1,4 @@
-# Campaign Manager Backend
+# Campaign Manager 
 
 This is the backend for the Campaign Manager application, built with Django and PostgreSQL.
 
