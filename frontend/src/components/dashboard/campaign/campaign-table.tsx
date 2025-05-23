@@ -58,7 +58,7 @@ const COLUMN_MAPPING = {
   'Unit Rate': 'unit_rate',
   'Budget': 'budget',
   'Impression': 'impressions',
-  'Budget Used': 'payment',
+  'Spend': 'payment',
   'Click': 'clicks',
   'CTR': 'ctr',
   'Views': 'views',
@@ -185,7 +185,7 @@ export function CampaignTable({
               {shouldShowColumn('Buy Type') && <TableCell sx={tableCellStyles}>Buy Type</TableCell>}
               {shouldShowColumn('Unit Rate') && <TableCell sx={tableCellStyles}>Unit Rate</TableCell>}
               {shouldShowColumn('Budget') && <TableCell sx={tableCellStyles}>Budget</TableCell>}
-              {shouldShowColumn('Budget Used') && <TableCell sx={tableCellStyles}>Budget Used</TableCell>}
+              {shouldShowColumn('Spend') && <TableCell sx={tableCellStyles}>Spend</TableCell>}
               {shouldShowColumn('Impression') && <TableCell sx={tableCellStyles}>Impression</TableCell>}
               {shouldShowColumn('Click') && <TableCell sx={tableCellStyles}>Click</TableCell>}
               {shouldShowColumn('CTR') && <TableCell sx={tableCellStyles}>CTR</TableCell>}
@@ -214,7 +214,7 @@ export function CampaignTable({
                   <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.unit_rate}</TableCell>}
                 {shouldShowColumn('Budget') && 
                   <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.total_budget}</TableCell>}
-                {shouldShowColumn('Budget Used') && 
+                {shouldShowColumn('Spend') && 
                   <TableCell sx={tableCellStyles}><span className="WebRupee">&#x20B9;</span>{row.payment!==null && row.payment!==undefined? row.payment:0}</TableCell>}
                 {shouldShowColumn('Impression') && <TableCell sx={tableCellStyles}>{row.impressions}</TableCell>}
                 {shouldShowColumn('Click') && <TableCell sx={tableCellStyles}>{row.clicks}</TableCell>}

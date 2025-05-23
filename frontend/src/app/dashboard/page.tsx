@@ -26,7 +26,7 @@ const AVAILABLE_FIELDS = [
   'Buy Type',
   'Unit Rate',
   'Budget',
-  'Budget Used',
+  'Spend',
   'Impression',
   'Click',
   'CTR',

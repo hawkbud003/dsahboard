@@ -61,6 +61,30 @@ export function SideNav(): React.JSX.Element {
       <Box component="nav" sx={{ flex: '1 1 auto', p: '12px' }}>
         {renderNavItems({ pathname, items: filteredNavItems })}
       </Box>
+      <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
+      <Box
+        sx={{
+          p: 2,
+          mt: 'auto',
+          borderTop: '1px solid var(--mui-palette-neutral-700)',
+          backgroundColor: 'var(--SideNav-background)',
+        }}
+      >
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'var(--NavItem-color)',
+            fontSize: '0.75rem',
+            textAlign: 'center',
+          }}
+        >
+          For any support, contact:
+          <br />
+          Email: support@campaignmanager.com
+          <br />
+          Phone: +1 (555) 123-4567
+        </Typography>
+      </Box>
     </Box>
   );
 }
