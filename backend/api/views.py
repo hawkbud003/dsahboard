@@ -360,7 +360,7 @@ class FileGetView(APIView):
                 })
         
         return Response(response_data, status=status.HTTP_200_OK)
-       
+    
     def post(self, request, *args, **kwargs):
         """
         POST: Upload an Excel file (.xlsx) to update a particular Campaign record.
@@ -400,31 +400,8 @@ class FileGetView(APIView):
             return Response({'error': f'Failed to read Excel file: {str(e)}'},
                             status=status.HTTP_400_BAD_REQUEST)
         
-        # 5. Verify that the Excel file contains a column for the campaign ID.
-        if 'id' not in df.columns:
-            return Response({'error': 'Excel file must contain a column named "id".'},
-                            status=status.HTTP_400_BAD_REQUEST)
         
-        # 2. Ensure the campaign exists
-        try:
-            campaign = Campaign.objects.get(id=campaign_id)
-        except Campaign.DoesNotExist:
-            return Response({'error': 'Campaign not found.'},
-                            status=status.HTTP_404_NOT_FOUND)
-        
-        # 3. Get the Excel file from the request
-        excel_file = request.FILES.get('file')
-        if not excel_file:
-            return Response({'error': 'No file was uploaded.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        
-        # 4. Read the Excel file (from sheet 1)
-        try:
-            df = pd.read_excel(excel_file, sheet_name=0)
-        except Exception as e:
-            return Response({'error': f'Failed to read Excel file: {str(e)}'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        
+
         # 5. Verify that the Excel file contains a column for the campaign ID.
         if 'id' not in df.columns:
             return Response({'error': 'Excel file must contain a column named "id".'},
@@ -432,26 +409,76 @@ class FileGetView(APIView):
         
         # Filter the DataFrame to include only rows for the provided campaign ID.
         df = df[df['id'] == campaign_id]
+        print(df)
         if df.empty:
             return Response({'error': 'No rows in Excel file match the provided campaign id.'},
                             status=status.HTTP_400_BAD_REQUEST)
         
-        # 6. Aggregate (sum) the required columns. (You can adjust which columns to aggregate as needed.)
-        total_impressions = df['impressions'].sum() if 'impressions' in df.columns else 0
-        total_clicks = df['clicks'].sum() if 'clicks' in df.columns else 0
-        total_ctr = df['ctr'].sum() if 'ctr' in df.columns else 0
-        total_views = df['views'].sum() if 'views' in df.columns else 0
-        total_vtr = df['vtr'].sum() if 'vtr' in df.columns else 0
+        # Print column names to debug
+        print("Excel columns:", df.columns.tolist())
         
+        # Map column names - adjust these based on your actual Excel column names
+        # The exact mapping will depend on your actual Excel column structure
+        impressions_col = 'impressions'
+        if impressions_col not in df.columns:
+            # Try alternate column names that might contain impression data
+            if 'Impressions' in df.columns:
+                impressions_col = 'Impressions'
+            # Add more alternatives if needed
+        
+        clicks_col = 'clicks'
+        if clicks_col not in df.columns:
+            if 'Clicks' in df.columns:
+                clicks_col = 'Clicks'
+            # Try numerical column index if column has no header
+            elif len(df.columns) > 4:  # Adjust based on your data structure
+                clicks_col = df.columns[4]
+        
+        views_col = 'views'
+        if views_col not in df.columns:
+            if 'Views' in df.columns:
+                views_col = 'Views'
+            # Try numerical column index if needed
+        
+        spends_col = 'spends'
+        if spends_col not in df.columns:
+            if 'Spends' in df.columns:
+                spends_col = 'Spends'
+            elif 'payment' in df.columns:
+                spends_col = 'payment'
+            elif 'payments' in df.columns:
+                spends_col = 'payments'    
+            elif 'spend' in df.columns:
+                spends_col = 'spend'    
+            elif 'Spend' in df.columns:
+                spends_col = 'Spend'
+
+        # Get totals using the mapped column names
+        total_impressions = df[impressions_col].sum() if impressions_col in df.columns else 0
+        total_clicks = df[clicks_col].sum() if clicks_col in df.columns else 0
+        total_views = df[views_col].sum() if views_col in df.columns else 0
+        total_spends = round(df[spends_col].sum(), 2) if spends_col in df.columns else 0
+        print(f"Using columns: {impressions_col}, {clicks_col}, {views_col}")
+        print(total_impressions)
+        print(total_clicks)
+        print(total_views)
         total_impressions = int(total_impressions)
         total_clicks = int(total_clicks)
         total_views = int(total_views)
 
-        # For DecimalField fields (ctr, vtr):
-        total_ctr = Decimal(str(total_ctr)).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-        total_vtr = Decimal(str(total_vtr)).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-       
+        # Calculate CTR and VTR correctly
+        total_ctr = Decimal('0.00')
+        total_vtr = Decimal('0.00')
         
+        if total_impressions > 0:
+            # CTR = (Total Clicks / Total Impressions) * 100
+            total_ctr = (Decimal(total_clicks) / Decimal(total_impressions)) * Decimal('100.0')
+            # VTR = (Total Views / Total Impressions) * 100
+            total_vtr = (Decimal(total_views) / Decimal(total_impressions)) * Decimal('100.0')
+        
+        # Format decimal fields to 2 decimal places
+        total_ctr = total_ctr.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+        total_vtr = total_vtr.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
         # 7. Update the Campaign record with the aggregated totals.
         campaign= Campaign.objects.filter(id=campaign_id).update(
             impressions=total_impressions,
@@ -459,9 +486,14 @@ class FileGetView(APIView):
             ctr=total_ctr,
             views=total_views,
             vtr=total_vtr,
+            payment=total_spends,
         )
+        
+        # Get the campaign object for use with the CampaignFile
+        campaign_obj = Campaign.objects.get(id=campaign_id)
+        
         campaign_file, created = CampaignFile.objects.update_or_create(
-            campaign=campaign_id,
+            campaign=campaign_obj,
             defaults={'file': excel_file},
         )
         processed_count = len(df)  # Number of rows aggregated
@@ -470,7 +502,8 @@ class FileGetView(APIView):
             {'message': f'Successfully processed {processed_count} Excel rows and updated Campaign {campaign_id}.'},
             status=status.HTTP_201_CREATED
         )
-
+    
+    
 from django.db.models import Q
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
