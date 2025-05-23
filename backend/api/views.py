@@ -312,6 +312,10 @@ def serializer_data_to_excel(serializer_data):
     # Drop these columns if they exist (ignore if they don't)
     df.drop(columns=columns_to_remove, inplace=True, errors='ignore')
     df.insert(0, 'date', pd.NaT)
+
+    # Convert column headers to uppercase
+    df.columns = [col.upper() for col in df.columns]
+
     # Convert DataFrame to an Excel file in memory.
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
