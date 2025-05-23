@@ -9,6 +9,9 @@ from rest_framework.response import Response
 import pandas as pd
 from rest_framework.views import APIView
 from django.http import HttpResponse
+from django.db.models import Sum, Count, Avg
+from django.db.models.functions import TruncMonth
+from datetime import datetime, timedelta
 
 from .models import (Campaign, Keyword, Location, proximity, CampaignVideo,
                      proximity_store, target_type, weather, UserType, Age, CarrierData,
@@ -669,5 +672,112 @@ class CreativeViewSet(viewsets.ModelViewSet):
                 "success": True,
             }
         )
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_campaign_performance(request):
+    # Get last 6 months of data
+    six_months_ago = datetime.now() - timedelta(days=180)
+    
+    # Get performance data grouped by month
+    performance_data = Campaign.objects.filter(
+        user=request.user,
+        created_at__gte=six_months_ago
+    ).annotate(
+        month=TruncMonth('created_at')
+    ).values('month').annotate(
+        impressions=Sum('impressions'),
+        clicks=Sum('clicks'),
+        views=Sum('views'),
+        spend=Sum('total_budget')
+    ).order_by('month')
+
+    # Format the data for the frontend
+    formatted_data = []
+    for item in performance_data:
+        formatted_data.append({
+            'month': item['month'].strftime('%b'),
+            'impressions': item['impressions'] or 0,
+            'clicks': item['clicks'] or 0,
+            'views': item['views'] or 0,
+            'spend': float(item['spend'] or 0)
+        })
+
+    return Response(formatted_data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_campaign_status_distribution(request):
+    # Get status distribution
+    status_data = Campaign.objects.filter(
+        user=request.user
+    ).values('status').annotate(
+        value=Count('id')
+    ).values('status', 'value')
+
+    # Format the data for the frontend
+    formatted_data = []
+    for item in status_data:
+        formatted_data.append({
+            'name': item['status'],
+            'value': item['value']
+        })
+
+    return Response(formatted_data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_campaign_type_distribution(request):
+    # Get campaign type distribution
+    type_data = Campaign.objects.filter(
+        user=request.user
+    ).values('objective').annotate(
+        value=Count('id')
+    ).values('objective', 'value')
+
+    # Format the data for the frontend
+    formatted_data = []
+    for item in type_data:
+        if item['objective']:  # Only include if objective is not null
+            formatted_data.append({
+                'name': item['objective'],
+                'value': item['value']
+            })
+
+    return Response(formatted_data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_campaign_metrics(request):
+    # Get last 6 months of data
+    six_months_ago = datetime.now() - timedelta(days=180)
+    
+    # Get metrics data grouped by month
+    metrics_data = Campaign.objects.filter(
+        user=request.user,
+        created_at__gte=six_months_ago
+    ).annotate(
+        month=TruncMonth('created_at')
+    ).values('month').annotate(
+        impressions=Sum('impressions'),
+        clicks=Sum('clicks'),
+        views=Sum('views'),
+        ctr=Avg('ctr'),
+        vtr=Avg('vtr')
+    ).order_by('month')
+
+    # Format the data for the frontend
+    formatted_data = []
+    for item in metrics_data:
+        formatted_data.append({
+            'month': item['month'].strftime('%b'),
+            'impressions': item['impressions'] or 0,
+            'clicks': item['clicks'] or 0,
+            'views': item['views'] or 0,
+            'ctr': float(item['ctr'] or 0),
+            'vtr': float(item['vtr'] or 0)
+        })
+
+    return Response(formatted_data)
 
     
