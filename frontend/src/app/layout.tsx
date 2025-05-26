@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { Viewport } from 'next';
 
 import '@/styles/global.css';
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { UserProvider } from '@/contexts/auth-context';
 import { LocalizationProvider } from '@/components/core/localization-provider';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';

@@ -20,7 +20,7 @@ const RedirectBtn: React.FC<AddCampaignProps> = ({ url,redirect }) => {
         }
     };
     return (
-        <Button onClick={handleClickOrRedirect} startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">Add</Button>
+        <Button onClick={handleClickOrRedirect} startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">Create Campaign</Button>
     );
 };
 
