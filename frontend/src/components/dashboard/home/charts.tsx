@@ -18,9 +18,35 @@ import {
   Legend
 } from 'recharts';
 import { useEffect, useState } from 'react';
-import { dashboardClient, PerformanceData, DistributionData, MetricsData } from '@/lib/DashboardClient';
+import { accountClient } from '@/lib/AccountClient';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+
+interface DashboardChartsData {
+  campaign_status_distribution: Array<{
+    status: string;
+    count: number;
+  }>;
+  objective_distribution: Array<{
+    objective: string;
+    count: number;
+  }>;
+  spend_by_buy_type: Array<{
+    buy_type: string;
+    total_spend: number;
+  }>;
+  campaign_performance_summary: {
+    total_impressions: number;
+    total_clicks: number;
+    total_views: number;
+    total_spend: number;
+    average_ctr: number;
+  };
+  top_campaigns_by_ctr: Array<{
+    name: string;
+    ctr: number;
+  }>;
+}
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat('en-IN', {
@@ -36,12 +62,13 @@ function formatNumber(value: number) {
   }).format(value);
 }
 
+function formatPercentage(value: number) {
+  return `${value.toFixed(2)}%`;
+}
+
 export function DashboardCharts() {
   const theme = useTheme();
-  const [performanceData, setPerformanceData] = useState<PerformanceData[]>([]);
-  const [statusData, setStatusData] = useState<DistributionData[]>([]);
-  const [typeData, setTypeData] = useState<DistributionData[]>([]);
-  const [metricsData, setMetricsData] = useState<MetricsData[]>([]);
+  const [data, setData] = useState<DashboardChartsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,21 +76,57 @@ export function DashboardCharts() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [performanceRes, statusRes, typeRes, metricsRes] = await Promise.all([
-          dashboardClient.getCampaignPerformance(),
-          dashboardClient.getCampaignStatusDistribution(),
-          dashboardClient.getCampaignTypeDistribution(),
-          dashboardClient.getCampaignMetrics()
-        ]);
+        console.log('Fetching dashboard charts data...');
+        
+        const response = await accountClient.getDashboardCharts();
+        console.log('Raw API Response:', response);
 
-        setPerformanceData(performanceRes);
-        setStatusData(statusRes);
-        setTypeData(typeRes);
-        setMetricsData(metricsRes);
+        if (!response) {
+          throw new Error('No response received from the API');
+        }
+
+        if (!response.success) {
+          throw new Error(response.message || 'API request was not successful');
+        }
+
+        if (!response.data) {
+          throw new Error('No data received from the API');
+        }
+
+        // Validate the data structure
+        const requiredFields = [
+          'campaign_status_distribution',
+          'objective_distribution',
+          'spend_by_buy_type',
+          'campaign_performance_summary',
+          'top_campaigns_by_ctr'
+        ] as const;
+
+        const missingFields = requiredFields.filter(field => !response.data[field]);
+        if (missingFields.length > 0) {
+          throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
+        }
+
+        setData(response.data);
+        console.log('Processed Data:', response.data);
         setError(null);
-      } catch (err) {
-        setError('Failed to fetch dashboard data');
-        console.error('Error fetching dashboard data:', err);
+      } catch (err: any) {
+        console.error('Error details:', {
+          message: err.message,
+          stack: err.stack,
+          response: err.response
+        });
+        
+        // Handle specific error cases
+        if (err.message.includes('Could not establish connection')) {
+          setError('Unable to connect to the server. Please check your internet connection and try again.');
+        } else if (err.response?.status === 401) {
+          setError('Your session has expired. Please log in again.');
+        } else if (err.response?.status === 403) {
+          setError('You do not have permission to access this data.');
+        } else {
+          setError(err.message || 'Failed to fetch dashboard data');
+        }
       } finally {
         setLoading(false);
       }
@@ -80,10 +143,17 @@ export function DashboardCharts() {
     );
   }
 
-  if (error) {
+  if (error || !data) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
-        <Typography color="error">{error}</Typography>
+        <Typography color="error">
+          {error || 'No data available'}
+          {error && (
+            <Box component="pre" sx={{ mt: 2, fontSize: '0.875rem', color: 'text.secondary' }}>
+              {error}
+            </Box>
+          )}
+        </Typography>
       </Box>
     );
   }
@@ -101,84 +171,55 @@ export function DashboardCharts() {
     padding: theme.spacing(1)
   };
 
+  // Transform data for pie charts
+  const statusData = data.campaign_status_distribution.map(item => ({
+    name: item.status,
+    value: item.count
+  }));
+
+  const objectiveData = data.objective_distribution.map(item => ({
+    name: item.objective,
+    value: item.count
+  }));
+
+  console.log('Transformed Status Data:', statusData);
+  console.log('Transformed Objective Data:', objectiveData);
+
   return (
     <Grid container spacing={2}>
-      {/* Campaign Performance Over Time */}
-      <Grid xs={12} md={8}>
+       {/* Top Campaigns by CTR */}
+       <Grid xs={12} md={6}>
         <Card>
-          <CardHeader title="Campaign Performance Over Time" />
+          <CardHeader title="Top Campaigns by CTR" />
           <CardContent>
             <Box sx={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={performanceData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <BarChart 
+                  data={data.top_campaigns_by_ctr} 
+                  layout="vertical"
+                  margin={{ top: 10, right: 30, left: 100, bottom: 0 }}
+                >
                   <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                   <XAxis 
-                    dataKey="month" 
+                    type="number"
                     {...axisStyle}
                     tick={{ ...axisStyle.tick, fontSize: 12 }}
+                    tickFormatter={formatPercentage}
                   />
                   <YAxis 
-                    yAxisId="left" 
+                    type="category"
+                    dataKey="name"
                     {...axisStyle}
                     tick={{ ...axisStyle.tick, fontSize: 12 }}
-                    tickFormatter={formatNumber}
-                  />
-                  <YAxis 
-                    yAxisId="right" 
-                    orientation="right" 
-                    {...axisStyle}
-                    tick={{ ...axisStyle.tick, fontSize: 12 }}
-                    tickFormatter={formatCurrency}
+                    width={100}
                   />
                   <Tooltip 
                     contentStyle={tooltipStyle}
-                    formatter={(value, name) => {
-                      if (name === 'spend') return formatCurrency(value as number);
-                      return formatNumber(value as number);
-                    }}
+                    formatter={(value) => formatPercentage(value as number)}
                   />
                   <Legend wrapperStyle={{ paddingTop: 10 }} />
-                  <Area
-                    yAxisId="left"
-                    type="monotone"
-                    dataKey="impressions"
-                    stroke="#8884d8"
-                    fill="#8884d8"
-                    fillOpacity={0.3}
-                    name="Impressions"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    yAxisId="left"
-                    type="monotone"
-                    dataKey="clicks"
-                    stroke="#82ca9d"
-                    fill="#82ca9d"
-                    fillOpacity={0.3}
-                    name="Clicks"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    yAxisId="left"
-                    type="monotone"
-                    dataKey="views"
-                    stroke="#ffc658"
-                    fill="#ffc658"
-                    fillOpacity={0.3}
-                    name="Views"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    yAxisId="right"
-                    type="monotone"
-                    dataKey="spend"
-                    stroke="#ff7300"
-                    fill="#ff7300"
-                    fillOpacity={0.3}
-                    name="Spend"
-                    strokeWidth={2}
-                  />
-                </AreaChart>
+                  <Bar dataKey="ctr" fill="#82ca9d" name="CTR" />
+                </BarChart>
               </ResponsiveContainer>
             </Box>
           </CardContent>
@@ -186,7 +227,7 @@ export function DashboardCharts() {
       </Grid>
 
       {/* Campaign Status Distribution */}
-      <Grid xs={12} md={4}>
+      <Grid xs={12} md={6}>
         <Card>
           <CardHeader title="Campaign Status Distribution" />
           <CardContent>
@@ -201,6 +242,7 @@ export function DashboardCharts() {
                     outerRadius={90}
                     fill="#8884d8"
                     dataKey="value"
+                    nameKey="name"
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   >
                     {statusData.map((entry, index) => (
@@ -216,25 +258,26 @@ export function DashboardCharts() {
         </Card>
       </Grid>
 
-      {/* Campaign Type Distribution */}
+      {/* Objective Distribution */}
       <Grid xs={12} md={6}>
         <Card>
-          <CardHeader title="Campaign Type Distribution" />
+          <CardHeader title="Objective Distribution" />
           <CardContent>
             <Box sx={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={typeData}
+                    data={objectiveData}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
                     outerRadius={90}
                     fill="#8884d8"
                     dataKey="value"
+                    nameKey="name"
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   >
-                    {typeData.map((entry, index) => (
+                    {objectiveData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
@@ -247,39 +290,66 @@ export function DashboardCharts() {
         </Card>
       </Grid>
 
-      {/* Campaign Performance Metrics */}
+      {/* Spend by Buy Type */}
       <Grid xs={12} md={6}>
         <Card>
-          <CardHeader title="Campaign Performance Metrics" />
+          <CardHeader title="Spend by Buy Type" />
           <CardContent>
             <Box sx={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={metricsData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <BarChart data={data.spend_by_buy_type} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                   <XAxis 
-                    dataKey="month" 
+                    dataKey="buy_type" 
                     {...axisStyle}
                     tick={{ ...axisStyle.tick, fontSize: 12 }}
                   />
                   <YAxis 
                     {...axisStyle}
                     tick={{ ...axisStyle.tick, fontSize: 12 }}
-                    tickFormatter={formatNumber}
+                    tickFormatter={formatCurrency}
                   />
                   <Tooltip 
                     contentStyle={tooltipStyle}
-                    formatter={(value, name) => {
-                      if (name === 'CTR' || name === 'VTR') return `${value}%`;
-                      return formatNumber(value as number);
-                    }}
+                    formatter={(value) => formatCurrency(value as number)}
                   />
                   <Legend wrapperStyle={{ paddingTop: 10 }} />
-                  <Bar dataKey="impressions" fill="#8884d8" name="Impressions" />
-                  <Bar dataKey="clicks" fill="#82ca9d" name="Clicks" />
-                  <Bar dataKey="views" fill="#ffc658" name="Views" />
+                  <Bar dataKey="total_spend" fill="#8884d8" name="Total Spend" />
                 </BarChart>
               </ResponsiveContainer>
             </Box>
+          </CardContent>
+        </Card>
+      </Grid>
+
+     
+      {/* Campaign Performance Summary */}
+      <Grid xs={12}>
+        <Card>
+          <CardHeader title="Campaign Performance Summary" />
+          <CardContent>
+            <Grid container spacing={3}>
+              <Grid xs={12} sm={6} md={3}>
+                <Typography variant="subtitle2" color="text.secondary">Total Impressions</Typography>
+                <Typography variant="h4">{formatNumber(data.campaign_performance_summary.total_impressions)}</Typography>
+              </Grid>
+              <Grid xs={12} sm={6} md={3}>
+                <Typography variant="subtitle2" color="text.secondary">Total Clicks</Typography>
+                <Typography variant="h4">{formatNumber(data.campaign_performance_summary.total_clicks)}</Typography>
+              </Grid>
+              <Grid xs={12} sm={6} md={3}>
+                <Typography variant="subtitle2" color="text.secondary">Total Views</Typography>
+                <Typography variant="h4">{formatNumber(data.campaign_performance_summary.total_views)}</Typography>
+              </Grid>
+              <Grid xs={12} sm={6} md={3}>
+                <Typography variant="subtitle2" color="text.secondary">Total Spend</Typography>
+                <Typography variant="h4">{formatCurrency(data.campaign_performance_summary.total_spend)}</Typography>
+              </Grid>
+              <Grid xs={12}>
+                <Typography variant="subtitle2" color="text.secondary">Average CTR</Typography>
+                <Typography variant="h4">{formatPercentage(data.campaign_performance_summary.average_ctr)}</Typography>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </Grid>

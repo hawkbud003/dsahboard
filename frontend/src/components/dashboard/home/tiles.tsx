@@ -1,8 +1,10 @@
 'use client';
 
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import { Card, CardContent, Typography, Box, CircularProgress } from '@mui/material';
 import { TrendingUp, Campaign, Visibility, TrendingDown } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
+import * as React from 'react';
+import { accountClient } from '@/lib/AccountClient';
 
 interface MetricTileProps {
   title: string;
@@ -33,33 +35,78 @@ function MetricTile({ title, value, icon, trend }: MetricTileProps) {
         <Typography variant="h4" component="div" sx={{ mb: 1 }}>
           {value}
         </Typography>
-        
       </CardContent>
     </Card>
   );
 }
 
+interface DashboardData {
+  total_impressions: number;
+  total_clicks: number;
+  total_spend: number;
+  campaign_count: number;
+}
+
 export function MetricTiles() {
-  // TODO: Replace with actual data from API
+  const [loading, setLoading] = React.useState(true);
+  const [data, setData] = React.useState<DashboardData | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    async function fetchDashboardData() {
+      try {
+        const response = await accountClient.getDashboardTiles();
+        if (response.success) {
+          setData(response.data);
+        } else {
+          setError('Failed to fetch dashboard data');
+        }
+      } catch (err) {
+        setError('Error fetching dashboard data');
+        console.error('Dashboard data fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchDashboardData();
+  }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Typography color="error">{error}</Typography>
+      </Box>
+    );
+  }
+
   const metrics = [
     {
       title: 'Total Campaigns',
-      value: '24',
+      value: data?.campaign_count || 0,
       icon: <Campaign sx={{ color: 'white' }} />
     },
     {
       title: 'Total Spend',
-      value: '$45,231',
+      value: `₹${data?.total_spend.toLocaleString() || 0}`,
       icon: <TrendingUp sx={{ color: 'white' }} />
     },
     {
       title: 'Total Impressions',
-      value: '1.2M',
+      value: data?.total_impressions.toLocaleString() || 0,
       icon: <Visibility sx={{ color: 'white' }} />
     },
     {
       title: 'Total Clicks',
-      value: '3.5M',
+      value: data?.total_clicks.toLocaleString() || 0,
       icon: <TrendingUp sx={{ color: 'white' }} />
     }
   ];

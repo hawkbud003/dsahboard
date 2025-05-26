@@ -27,6 +27,9 @@ urlpatterns = [
     path('dashboard/status-distribution/', views.get_campaign_status_distribution, name='campaign-status-distribution'),
     path('dashboard/type-distribution/', views.get_campaign_type_distribution, name='campaign-type-distribution'),
     path('dashboard/metrics/', views.get_campaign_metrics, name='campaign-metrics'),
+    path('dashboard/tiles/', views.dashboard_tiles, name='campaign-tiles'),
+    path('dashboard/charts/', views.dashboard_data, name='campaign-charts'),
+    
     path("health/", views.health_check),
     path("creative_list/", views.creative_list_all),
     path('get-csv/<int:campaign_id>', views.FileGetView.as_view(), name='mymodel-csv'),

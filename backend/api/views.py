@@ -780,4 +780,108 @@ def get_campaign_metrics(request):
 
     return Response(formatted_data)
 
+
+from django.db.models import Sum
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])   
+def dashboard_tiles(request):
+    user_type_pm_values = UserType.objects.filter(user=request.user).values_list('user_type_pm', flat=True)
     
+    if user_type_pm_values.first() is True:
+        campaigns = Campaign.objects.all()
+        campaign_count = campaigns.count()
+        total_data = campaigns.aggregate(
+            total_impressions=Sum('impressions'),
+            total_clicks=Sum('clicks'),
+            total_spend=Sum('payment')
+        )
+        total_data['campaign_count'] = campaign_count
+        total_data['total_spend'] = int(total_data['total_spend'])
+    else:    
+        campaigns = Campaign.objects.filter(user=request.user)
+        campaign_count = campaigns.count()
+        total_data = campaigns.aggregate(
+            total_impressions=Sum('impressions'),
+            total_clicks=Sum('clicks'),
+            total_spend=Sum('payment')
+        )
+        total_data['campaign_count'] = campaign_count
+        total_data['total_spend'] = int(total_data['total_spend'])
+    return Response(
+        {"message": "message", "data": total_data, "success": True}, status=status.HTTP_200_OK
+    )    
+
+
+from django.db.models import Count, Sum, F, ExpressionWrapper, DecimalField
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Campaign, UserType
+
+@api_view(['GET'])
+def dashboard_data(request):
+    # Check if user is PM
+    user_type_pm_values = UserType.objects.filter(user=request.user).values_list('user_type_pm', flat=True)
+    is_pm = user_type_pm_values.first() is True
+
+    # Use appropriate queryset
+    campaigns = Campaign.objects.all() if is_pm else Campaign.objects.filter(user=request.user)
+
+    # 1. Campaign Status Distribution
+    campaign_status_distribution = (
+        campaigns.values('status')
+        .annotate(count=Count('id'))
+    )
+
+    # 2. Objective Distribution
+    objective_distribution = (
+        campaigns.values('objective')
+        .annotate(count=Count('id'))
+    )
+
+    # 3. Spend by Buy Type
+    spend_by_buy_type = (
+        campaigns.annotate(
+            spend=ExpressionWrapper(
+                F('unit_rate') * F('impressions'),
+                output_field=DecimalField(max_digits=20, decimal_places=2)
+            )
+        )
+        .values('buy_type')
+        .annotate(total_spend=Sum('spend'))
+    )
+
+    # 4. Campaign Performance Summary
+    total_impressions = campaigns.aggregate(Sum('impressions'))['impressions__sum'] or 0
+    total_clicks = campaigns.aggregate(Sum('clicks'))['clicks__sum'] or 0
+
+    campaign_performance_summary = {
+        "total_impressions": total_impressions,
+        "total_clicks": total_clicks,
+        "total_views": campaigns.aggregate(Sum('views'))['views__sum'] or 0,
+        "total_spend": campaigns.aggregate(
+            total_spend=Sum(
+                ExpressionWrapper(
+                    F('unit_rate') * F('impressions'),
+                    output_field=DecimalField(max_digits=20, decimal_places=2)
+                )
+            )
+        )['total_spend'] or 0,
+        "average_ctr": round((total_clicks / total_impressions) * 100, 2) if total_impressions > 0 else 0
+    }
+
+    # 5. Top Campaigns by CTR
+    top_campaigns_by_ctr = (
+        campaigns.values('name', 'ctr')
+        .order_by('-ctr')[:5]
+    )
+
+    return Response({"message": "message", "data" : {
+        "campaign_status_distribution": list(campaign_status_distribution),
+        "objective_distribution": list(objective_distribution),
+        "spend_by_buy_type": list(spend_by_buy_type),
+        "campaign_performance_summary": campaign_performance_summary,
+        "top_campaigns_by_ctr": list(top_campaigns_by_ctr),
+    },"success": True}, status=status.HTTP_200_OK)
+
+
