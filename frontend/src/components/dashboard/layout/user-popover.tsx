@@ -63,6 +63,7 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
         <Typography color="text.secondary" variant="body2">{user?.email}</Typography>
       </Box>
       <Divider />
+      
       <MenuList disablePadding sx={{ p: '8px', '& .MuiMenuItem-root': { borderRadius: 1 } }}>
         <MenuItem onClick={handleSignOut}>
           <ListItemIcon>

@@ -8,14 +8,29 @@ import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
 import * as React from 'react';
 
 import { usePopover } from '@/hooks/use-popover';
+import { accountClient } from '@/lib/AccountClient';
+import { User } from '@/types/auth';
 
 import { MobileNav } from './mobile-nav';
 import { UserPopover } from './user-popover';
 
 export function MainNav(): React.JSX.Element {
   const [openNav, setOpenNav] = React.useState<boolean>(false);
-
+  const [user, setUser] = React.useState<User | null>(null);
   const userPopover = usePopover<HTMLDivElement>();
+
+  async function fetchUser() {
+    try {
+      const response = await accountClient.getUser();
+      setUser(response);
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <React.Fragment>
@@ -48,8 +63,14 @@ export function MainNav(): React.JSX.Element {
             <Avatar
               onClick={userPopover.handleOpen}
               ref={userPopover.anchorRef}
-              src=""
-              sx={{ cursor: 'pointer' }}
+              src={user?.logo || ''}
+              sx={{ 
+                cursor: 'pointer',
+                height: '40px',
+                width: '40px',
+                border: '0.5px solid #D3D3D3',
+                '& img': { objectFit: 'contain' }
+              }}
             />
           </Stack>
         </Stack>

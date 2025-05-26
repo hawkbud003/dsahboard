@@ -80,9 +80,9 @@ export function SideNav(): React.JSX.Element {
         >
           For any support, contact:
           <br />
-          Email: support@campaignmanager.com
+          Email: adops@hawkbud.in
           <br />
-          Phone: +1 (555) 123-4567
+          Phone: +91 854-285-4248
         </Typography>
       </Box>
     </Box>
