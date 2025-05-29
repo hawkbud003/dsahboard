@@ -38,13 +38,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "rest_framework_simplejwt",
-    "social_django",
-    
+    "rest_framework_simplejwt",  
     "storages",
     "corsheaders",
     "dsp",
-    "django_crontab",
 ]
 
 MIDDLEWARE = [
@@ -250,8 +247,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 INSTALLED_APPS += ["rest_framework_simplejwt.token_blacklist"]
 
-# Cronjob settings
-CRONJOBS = [
-    ('0 0 * * *', 'dsp.backup_utils.backup_database_to_s3')  # Run at midnight every day
-]
 
