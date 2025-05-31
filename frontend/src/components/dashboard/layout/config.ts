@@ -6,5 +6,6 @@ export const navItems = [
   { key: 'campaigns', title: 'Campaigns', href: paths.dashboard.overview, icon: 'plugs-connected' },
   { key: 'creative', title: 'Creatives', href: paths.dashboard.creative, icon: 'file-plus' },
   { key: 'customers', title: 'Customers', href: paths.dashboard.customers, icon: 'user' },
+  { key: 'wallet', title: 'Wallet Management', href: paths.dashboard.wallet, icon: 'chart-pie' },
   { key: 'account', title: 'Account', href: paths.dashboard.account, icon: 'user' },
 ] satisfies NavItemConfig[];

@@ -16,12 +16,13 @@ import type { NavItemConfig } from '@/types/nav';
 import { navItems } from './config';
 import { navIcons } from './nav-icons';
 import { useAuth } from '@/hooks/use-auth';
+import { AmountSection } from './amount-section';
 
 export function SideNav(): React.JSX.Element {
   const { auth } = useAuth();
   const pathname = usePathname();
   const filteredNavItems = navItems.filter(
-    (item) => !(item.key === 'customers' && auth?.usertype !== 'admin')
+    (item) => !(item.key === 'customers' && auth?.usertype !== 'admin') && !(item.key === 'wallet' && auth?.usertype !== 'admin')
   );
 
   return (
@@ -62,10 +63,10 @@ export function SideNav(): React.JSX.Element {
         {renderNavItems({ pathname, items: filteredNavItems })}
       </Box>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
+      <AmountSection />
       <Box
         sx={{
           p: 2,
-          mt: 'auto',
           borderTop: '1px solid var(--mui-palette-neutral-700)',
           backgroundColor: 'var(--SideNav-background)',
         }}
@@ -75,14 +76,19 @@ export function SideNav(): React.JSX.Element {
           sx={{
             color: 'var(--NavItem-color)',
             fontSize: '0.75rem',
-            textAlign: 'center',
+           
           }}
         >
-          For any support, contact:
+          Our support team is always ready to assist you.
+          Contact us via:
           <br />
-          Email: adops@hawkbud.in
+          📧 Email: adops@hawkbud.in
           <br />
-          Phone: +91 854-285-4248
+          📞 Phone: +91 854-285-4248
+          
+          
+         
+          
         </Typography>
       </Box>
     </Box>

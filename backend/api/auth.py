@@ -12,7 +12,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
-from .models import UserType, UserProfile
+from .models import UserType, UserProfile,UserWallet
 from .serializers import (ChangePasswordSerializer,
                           CustomTokenObtainPairSerializer)
 
@@ -86,6 +86,7 @@ class RegisterView(APIView):
                 last_name=last_name,
             )
             UserType.objects.create(user=user)
+            UserWallet.objects.create(user=user,amount=0)
             user_profile = UserProfile.objects.create(user=user, company_name=company_name, gst=gst)
             if logo:
                 user_profile.logo = logo  # Assuming the 'logo' field is added in the UserProfile model

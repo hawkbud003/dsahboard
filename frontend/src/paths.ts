@@ -11,6 +11,7 @@ export const paths = {
     creative: '/dashboard/creative',
     creativeCreate: '/dashboard/creative/create',
     analysis: '/dashboard/home',
+    wallet: '/dashboard/admin/wallet',
   },
   errors: { notFound: '/errors/not-found' },
 } as const;

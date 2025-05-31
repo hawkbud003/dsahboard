@@ -45,6 +45,35 @@ interface DashboardChartsResponse {
   success: boolean;
 }
 
+interface UserWallet {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  company_name: string | null;
+  wallet_amount: number;
+}
+
+interface WalletResponse {
+  data: UserWallet[];
+}
+
+interface WalletUpdateResponse {
+  message: string;
+  data: {
+    amount: number;
+  };
+  success: boolean;
+}
+
+interface UserAmountResponse {
+  message: string;
+  data: {
+    amount: number;
+  };
+  success: boolean;
+}
+
 class AccountClient {
 
     async getUser(): Promise<User> {
@@ -91,12 +120,63 @@ class AccountClient {
       }
     }
 
+    async getUserAmount(): Promise<number> {
+      try {
+        const response = await axiosInstance.get('/api/get_user_amount/');
+        return response.data.data;
+      } catch (error: any) {
+        throw new Error(utils.handleErrorMessage(error));
+      }
+    }
+
+    async getAllUsers(): Promise<User[]> {
+      try {
+        const response = await axiosInstance.get('/api/users/', {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        return response.data.data;
+      } catch (error: any) {
+        throw new Error(utils.handleErrorMessage(error));
+      }
+    }
+
+    async getAllUsersWithWallet(): Promise<WalletResponse> {
+      try {
+        const response = await axiosInstance.get('users-wallet/');
+        return response.data;
+      } catch (error: any) {
+        throw new Error(utils.handleErrorMessage(error));
+      }
+    }
+
+    async updateUserWallet(userId: number, amount: number, action: 'add' | 'subtract' = 'add'): Promise<WalletUpdateResponse> {
+      try {
+        const response = await axiosInstance.post('update-wallet/', {
+          user_id: userId,
+          amount,
+          action
+        });
+        return response.data;
+      } catch (error: any) {
+        throw new Error(utils.handleErrorMessage(error));
+      }
+    }
+
     async getDashboardCharts(): Promise<DashboardChartsResponse> {
       try {
         const response = await axiosInstance.get('/dashboard/charts/', {
           headers: { 'Content-Type': 'application/json' },
         });
         return response.data;
+      } catch (error: any) {
+        throw new Error(utils.handleErrorMessage(error));
+      }
+    }
+
+    async getUserWalletAmount(): Promise<number> {
+      try {
+        const response = await axiosInstance.get('user-amount/');
+        return response.data.data.amount;
       } catch (error: any) {
         throw new Error(utils.handleErrorMessage(error));
       }
