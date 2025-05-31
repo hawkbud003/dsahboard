@@ -81,12 +81,6 @@ export function SignUpForm(): React.JSX.Element {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack 
           spacing={2} 
-          sx={{
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 1,
-            p: 3
-          }}
         >
           {/* First Name */}
           <Grid item xs={12} md={6} mb={1}>
