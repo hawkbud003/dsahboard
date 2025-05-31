@@ -34,8 +34,9 @@ urlpatterns = [
     path("creative_list/", views.creative_list_all),
     path('get-csv/<int:campaign_id>', views.FileGetView.as_view(), name='mymodel-csv'),
     path("login/", views.login_page, name="login"),
-
-  
+    path('user-amount/', views.get_user_amount, name='user-amount'),
+    path('users-wallet/', views.get_all_users_with_wallet, name='get_all_users_with_wallet'),
+    path('update-wallet/', views.update_user_wallet, name='update_user_wallet'),
     path("admin/", admin.site.urls),
     path("age/", views.age_api, name="age_api"),
     path("brandSafety/", views.brandSafety_api, name="brandSafety_api"),

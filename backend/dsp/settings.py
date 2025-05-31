@@ -26,6 +26,7 @@ ALLOWED_HOSTS = [
     'frontenddashboard.vercel.app'
     'backendcamp.zapto.org'
     "172.105.58.203",
+    "ominifytag.com",
     
 ]
 
@@ -161,6 +162,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://localhost:8000',
     'http://localhost',
+    'http://ominifytag.com',
+    'https://ominifytag.com'
 ]
 
 # CSRF Settings
@@ -172,6 +175,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://localhost',
     'https://frontenddashboard.vercel.app',
+    'http://ominifytag.com',
+    'https://ominifytag.com'
 ]
 
 

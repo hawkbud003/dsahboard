@@ -8,7 +8,7 @@ from storages.backends.s3boto3 import S3Boto3Storage
 from .models import (Campaign, CampaignImage, Keyword, Location, UserType, CampaignVideo, Creative,
                      proximity, proximity_store, target_type, weather, UserProfile, Bidding_detail,  BrandSafety,
     BuyType,
-    Viewability,tag_tracker,CampaignFile)
+    Viewability,tag_tracker,CampaignFile, UserWallet)
 
 
 
@@ -326,3 +326,25 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         profile.save()
 
         return instance
+
+class UserWalletSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    user_id = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = UserWallet
+        fields = ['id', 'user', 'user_id', 'amount', 'created_at', 'updated_at']
+
+class UserWalletUpdateSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+    action = serializers.ChoiceField(choices=['add', 'subtract'])
+
+    def validate(self, data):
+        try:
+            user = User.objects.get(id=data['user_id'])
+            if not UserWallet.objects.filter(user=user).exists():
+                UserWallet.objects.create(user=user)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("User does not exist")
+        return data

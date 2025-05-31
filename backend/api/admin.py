@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import (
+    UserWallet,
     Campaign,
     CampaignImage,
     CampaignVideo,
@@ -124,6 +125,7 @@ class CampaignFileAdmin(admin.ModelAdmin):
 
 admin.site.register(CampaignFile,CampaignFileAdmin)
 admin.site.register(weather)
+admin.site.register(UserWallet)
 admin.site.register(tag_tracker)
 admin.site.register(UserType, UserTypeAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)

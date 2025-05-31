@@ -23,8 +23,9 @@ from .models import (Campaign, Keyword, Location, proximity, CampaignVideo,
     Device,
     DistinctInterest,Bidding_detail, BrandSafety,
     BuyType,
-    Viewability,tag_tracker,CampaignFile, CampaignImage)
+    Viewability,tag_tracker,CampaignFile, CampaignImage, UserWallet)
 from .serializers import (CampaignCreateUpdateSerializer,
+                          UserWalletUpdateSerializer,
                           CampaignImageSerializer, CampaignSerializer,
                           KeywordSerializer, LocationSerializer,
                           ProximitySerializer, ProximityStoreSerializer,
@@ -883,5 +884,78 @@ def dashboard_data(request):
         "campaign_performance_summary": campaign_performance_summary,
         "top_campaigns_by_ctr": list(top_campaigns_by_ctr),
     },"success": True}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_amount(request):
+    wallet = get_object_or_404(UserWallet, user=request.user)
+    return Response(
+        {"message": "message", "data": {"amount" : float(wallet.amount)}, "success": True}, status=status.HTTP_200_OK
+    ) 
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_users_with_wallet(request):
+    """Get all users with their wallet information"""
+    user_type_pm_values = UserType.objects.filter(user=request.user).values_list('user_type_pm', flat=True)
+    
+    if user_type_pm_values.first() is False:
+        return Response({"error": "Only admin users can access this endpoint"}, status=403)
+
+        
+    
+    users = User.objects.exclude(usertype__user_type_pm=True)
+    wallets = UserWallet.objects.filter(user__in=users)
+    
+    # Create a dictionary of user wallets for easy lookup
+    wallet_dict = {wallet.user_id: wallet for wallet in wallets}
+    
+    # Prepare the response data
+    data = []
+    for user in users:
+        wallet = wallet_dict.get(user.id)
+        data.append({
+            'id': user.id,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'company_name': user.profile.company_name if hasattr(user, 'profile') else None,
+            'wallet_amount': float(wallet.amount) if wallet else 0.00
+        })
+    
+    return Response({"data": data})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_user_wallet(request):
+    """Update a user's wallet amount"""
+    user_type_pm_values = UserType.objects.filter(user=request.user).values_list('user_type_pm', flat=True)
+    
+    if user_type_pm_values.first() is False:
+        return Response({"error": "Only admin users can access this endpoint"}, status=403)
+    
+    serializer = UserWalletUpdateSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=400)
+    
+    data = serializer.validated_data
+    user = User.objects.get(id=data['user_id'])
+    wallet = UserWallet.objects.get(user=user)
+    
+    if data['action'] == 'add':
+        wallet.amount += data['amount']
+    else:  # subtract
+        if wallet.amount < data['amount']:
+            return Response({"error": "Insufficient wallet balance"}, status=400)
+        wallet.amount -= data['amount']
+    
+    wallet.save()
+    
+    return Response(
+        {"message": f"Successfully {data['action']}ed ₹{data['amount']} to {user.first_name}'s wallet", "data": {"amount" : float(wallet.amount)}, "success": True}, status=status.HTTP_200_OK
+    )
+
+    
+
 
 
